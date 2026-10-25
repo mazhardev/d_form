@@ -142,7 +142,7 @@ function CartDrawer() {
                   <img src={asset(p.image)} alt="" width="64" height="64" />
                   <div className="line-info">
                     <strong>{p.name}</strong>
-                    <span>{p.size}{typeof p.price === "number" && qty > 1 && ` · ${formatPKR(p.price)} each`}</span>
+                    <span>{p.size}{typeof p.price === "number" && ` · ${formatPKR(p.price)}`}</span>
                     <div className="qty">
                       <button onClick={() => setQty(p.id, qty - 1)} aria-label={`Remove one ${p.name} ${p.size}`}>−</button>
                       <span aria-live="polite">{qty}</span>
