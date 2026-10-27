@@ -6,18 +6,23 @@ export const metadata = {
   metadataBase: new URL(SITE_URL),
   alternates: { canonical: "./" },
   keywords: [
-    "desi ghee", "pure desi ghee", "desi ghee Okara", "makhan", "fresh cream ghee", "Muhammad Dairy",
-    "khalis doodh", "dahi", "daily milk Okara", "daily dahi Okara", "milk for weddings Okara", "dahi for weddings", "milk supplier for hotels Okara",
+    "desi ghee Okara", "pure desi ghee in Okara", "khalis desi ghee", "desi ghee price in Okara", "asli desi ghee",
+    "danedar desi ghee", "makhan Okara", "khalis doodh Okara", "fresh milk Okara", "dahi Okara", "milk supplier Okara",
+    "daily milk supply Okara", "milk and dahi for weddings", "milk supplier for hotels Okara", "dairy in Okara",
+    "Muhammad Dairy", "دیسی گھی اوکاڑہ", "خالص دیسی گھی", "دودھ دہی اوکاڑہ",
   ],
-  title: "Muhammad Dairy | Pure Desi Ghee in Okara since 1975",
+  title: "Desi Ghee, Doodh & Dahi in Okara | Muhammad Dairy since 1975",
   description:
-    "Serving Okara since 1975, Muhammad Dairy makes pure desi ghee from fresh cream in Okara (Sheikh Basti, GT Road), Pakistan, and supplies khalis doodh and dahi daily in Okara city and in bulk for weddings, functions and hotels. Order on WhatsApp.",
+    "Pure desi ghee from fresh cream, plus khalis doodh and dahi in Okara since 1975. Daily supply in Okara city, bulk orders for weddings and hotels. Cash on delivery.",
   openGraph: {
-    title: "Muhammad Dairy | Pure Desi Ghee",
-    description: "Fresh cream se khalis desi ghee. Order on WhatsApp: 0305 684 7007",
+    title: "Muhammad Dairy, Okara | Khalis Desi Ghee, Doodh & Dahi",
+    description: "Fresh cream se khalis desi ghee, plus doodh and dahi daily in Okara. Order on WhatsApp: 0305 684 7007",
     type: "website",
-    images: [{ url: "media/poster.jpg", width: 540, height: 972 }],
+    siteName: "Muhammad Dairy",
+    locale: "en_PK",
+    images: [{ url: "media/ghee-1kg.jpg", width: 600, height: 600, alt: "Pure desi ghee from Muhammad Dairy, Okara" }],
   },
+  twitter: { card: "summary_large_image" },
 };
 
 export const viewport = { themeColor: "#fbf8f2" };

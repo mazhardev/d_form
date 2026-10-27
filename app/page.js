@@ -4,6 +4,38 @@ import { AddToCart, CartButton, WaIcon } from "./cart";
 
 const YEARS = new Date().getFullYear() - BUSINESS.since;
 
+const PRICE_LIST = PRODUCTS.map(
+  (p) => `${p.name} ${p.size}: ${typeof p.price === "number" ? formatPKR(p.price) : "price on WhatsApp"}`
+).join("; ");
+
+// Shown on the page and sent to Google as FAQPage data, so both always match.
+const FAQS = [
+  {
+    q: "Where can I buy pure desi ghee in Okara?",
+    a: `At ${BUSINESS.name} on GT Road, Sheikh Basti, opposite Azhar Residences in Okara. We have made khalis desi ghee here since ${BUSINESS.since}. Visit the dairy, or order on WhatsApp at ${BUSINESS.whatsappDisplay} and pay cash on delivery.`,
+  },
+  {
+    q: "What is the price of desi ghee in Okara?",
+    a: `Our current prices are ${PRICE_LIST}. For bulk and event orders, message us on WhatsApp for a quote.`,
+  },
+  {
+    q: "How can I tell if desi ghee is pure?",
+    a: "Pure desi ghee melts clear and golden, smells rich and nutty, and sets with a grainy, danedar texture at room temperature. Ghee mixed with vegetable oil or banaspati usually smells flat and feels oily. Ours is made only from fresh cream, and you can watch every step in the video on this page.",
+  },
+  {
+    q: "Do you supply fresh milk and dahi daily in Okara?",
+    a: "Yes. We supply khalis doodh and fresh dahi every day to homes, shops and hotels in Okara city. Send us your area and daily quantity on WhatsApp and we will confirm the price and timing.",
+  },
+  {
+    q: "Can I order doodh and dahi for a wedding or event?",
+    a: "Yes. We take bulk orders of doodh and dahi for weddings, mehndi, walima and other functions, and well-known hotels in Okara city already buy from us. Tell us the date and quantity on WhatsApp as early as you can.",
+  },
+  {
+    q: "Do you deliver, and how do I pay?",
+    a: "We deliver to your door and you pay cash on delivery. Every order is confirmed with you personally on WhatsApp first.",
+  },
+];
+
 const jsonLd = {
   "@context": "https://schema.org",
   "@graph": [
@@ -15,7 +47,7 @@ const jsonLd = {
       foundingDate: String(BUSINESS.since),
       url: SITE_URL,
       telephone: "+" + BUSINESS.whatsappIntl,
-      image: `${SITE_URL}media/poster.jpg`,
+      image: `${SITE_URL}media/ghee-1kg.jpg`,
       address: {
         "@type": "PostalAddress",
         streetAddress: BUSINESS.street,
@@ -23,7 +55,24 @@ const jsonLd = {
         addressRegion: "Punjab",
         addressCountry: "PK",
       },
-      areaServed: "PK",
+      hasMap: mapsLink(),
+      areaServed: { "@type": "City", name: "Okara" },
+      paymentAccepted: "Cash",
+      currenciesAccepted: "PKR",
+      knowsAbout: ["Desi ghee", "Makhan", "Milk", "Dahi"],
+      makesOffer: DAIRY_ITEMS.map((d) => ({
+        "@type": "Offer",
+        description: "Daily supply in Okara city, and bulk orders for weddings, functions and hotels",
+        itemOffered: { "@type": "Product", name: d.name, description: d.text },
+      })),
+    },
+    {
+      "@type": "FAQPage",
+      mainEntity: FAQS.map((f) => ({
+        "@type": "Question",
+        name: f.q,
+        acceptedAnswer: { "@type": "Answer", text: f.a },
+      })),
     },
     ...PRODUCTS.map((p) => ({
       "@type": "Product",
@@ -133,7 +182,16 @@ const ART = {
 
 function ArtImage({ item }) {
   if (item.image) {
-    return <img src={asset(item.image)} alt={item.name} loading="lazy" width="600" height="450" />;
+    return (
+      <>
+        <img src={asset(item.image)} alt={item.alt || item.name} loading="lazy" width="600" height="450" />
+        {item.credit && (
+          <a className="photo-credit" href={item.credit.url} target="_blank" rel="noopener">
+            Photo: {item.credit.by} · {item.credit.license}
+          </a>
+        )}
+      </>
+    );
   }
   return (
     <div className="art-placeholder" role="img" aria-label={`${item.name} illustration`}>
@@ -214,7 +272,7 @@ export default function Home() {
               <p className="pill">
                 <span className="pill-dot" aria-hidden="true" /> Okara, Punjab · since {BUSINESS.since}
               </p>
-              <h1>Pure desi ghee, made from fresh cream.</h1>
+              <h1>Pure desi ghee in Okara, made from fresh cream.</h1>
               <p className="hero-urdu" lang="ur" dir="rtl">تازہ بالائی سے خالص دیسی گھی</p>
               <p className="lede">
                 For over {YEARS} years, families in Okara have bought their ghee from us. We churn fresh cream into
@@ -235,9 +293,9 @@ export default function Home() {
 
             <div className="hero-media">
               <div className="hero-photos">
-                <img src={asset("/media/ghee-1kg.jpg")} alt="Golden desi ghee in a steel pot" width="600" height="600" />
-                <img src={asset("/media/step2.jpg")} alt="Makhan being churned by hand" width="480" height="549" />
-                <img src={asset("/media/step4.jpg")} alt="Makhan slow-cooking into ghee" width="480" height="549" />
+                <img src={asset("/media/ghee-1kg.jpg")} alt="Pure desi ghee cooking in a steel pot at Muhammad Dairy, Okara" width="600" height="600" />
+                <img src={asset("/media/step2.jpg")} alt="Makhan being churned by hand for desi ghee" width="480" height="549" />
+                <img src={asset("/media/step4.jpg")} alt="Makhan slow-cooking into khalis desi ghee" width="480" height="549" />
               </div>
               <a className="hero-film" href="#process">
                 <img src={asset("/media/poster.jpg")} alt="" width="54" height="72" />
@@ -274,7 +332,7 @@ export default function Home() {
             <div className="section-head split">
               <div>
                 <p className="kicker">Shop</p>
-                <h2>Order desi ghee &amp; makhan</h2>
+                <h2>Buy desi ghee &amp; makhan in Okara</h2>
               </div>
               <p className="section-lede">
                 Add what you need to your cart and send the order on WhatsApp. We confirm every order personally.
@@ -284,7 +342,7 @@ export default function Home() {
               {PRODUCTS.map((p) => (
                 <article key={p.id} className="product">
                   <div className="product-img">
-                    <img src={asset(p.image)} alt={`${p.name} ${p.size}`} loading="lazy" width="480" height="480" />
+                    <img src={asset(p.image)} alt={`${p.name} ${p.size} from Muhammad Dairy, Okara`} loading="lazy" width="480" height="480" />
                     <span className="product-size">{p.size}</span>
                   </div>
                   <div className="product-body">
@@ -435,11 +493,59 @@ export default function Home() {
           </div>
         </section>
 
+        <section id="okara" className="section guide">
+          <div className="wrap guide-grid">
+            <article className="guide-article">
+              <p className="kicker">Desi ghee in Okara</p>
+              <h2>Okara&apos;s trusted name for desi ghee, doodh and dahi</h2>
+              <p className="guide-urdu" lang="ur" dir="rtl">اوکاڑہ میں خالص دیسی گھی، دودھ اور دہی</p>
+              <p>
+                {BUSINESS.name} is a family dairy on GT Road, Sheikh Basti, opposite Azhar Residences in Okara. Since{" "}
+                {BUSINESS.since} we have made <strong>pure desi ghee</strong> the slow, traditional way, and today we
+                also supply <strong>khalis doodh and fresh dahi</strong> across Okara city.
+              </p>
+              <h3>What makes our desi ghee khalis</h3>
+              <p>
+                Every batch starts with fresh cream. The cream is churned into makhan, then cooked slowly in a degchi
+                until the water is gone and the ghee turns golden. Nothing else goes in: no vegetable oil, no banaspati,
+                no colour and no flavouring. That is why it smells rich, tastes of real makhan and sets{" "}
+                <strong>danedar</strong> as it cools.
+              </p>
+              <h3>How to tell if desi ghee is pure</h3>
+              <p>
+                Real desi ghee melts clear and golden, smells nutty and sets with a grainy texture at room temperature.
+                Ghee mixed with oil or banaspati usually smells flat and feels oily. We would rather show you than ask
+                you to trust us, so <a href="#process">watch every step of how ours is made</a>.
+              </p>
+              <h3>Doodh and dahi, daily or in bulk</h3>
+              <p>
+                We supply khalis doodh and dahi every day to homes, shops and hotels in Okara city, and some of the
+                city&apos;s well-known hotels already buy from us. For weddings, mehndi, walima and other functions we
+                take bulk orders. <a href="#doodh-dahi">See daily and bulk options</a>.
+              </p>
+              <p>
+                Ordering is simple: <a href="#shop">add desi ghee to your cart</a> or message us on WhatsApp at{" "}
+                {BUSINESS.whatsappDisplay}. We confirm every order personally, and you pay cash on delivery.
+              </p>
+            </article>
+
+            <div className="faq">
+              <h2 className="faq-title">Questions people ask</h2>
+              {FAQS.map((f, i) => (
+                <details key={f.q} className="faq-item" open={i === 0}>
+                  <summary>{f.q}</summary>
+                  <p>{f.a}</p>
+                </details>
+              ))}
+            </div>
+          </div>
+        </section>
+
         <section id="contact" className="section visit">
           <div className="wrap visit-grid">
             <div className="visit-copy">
               <p className="kicker">Visit or message us</p>
-              <h2>Come to the dairy, or order from home</h2>
+              <h2>Visit our dairy in Okara, or order from home</h2>
               <ul className="visit-list">
                 <li>
                   <span className="visit-icon"><Icon name="pin" /></span>
@@ -480,7 +586,7 @@ export default function Home() {
           <div className="footer-brand">
             <span className="brand-name">{BUSINESS.name}</span>
             <span className="footer-urdu" lang="ur" dir="rtl">محمد ڈیری، اوکاڑہ</span>
-            <p>Pure desi ghee from fresh cream, made in Okara since {BUSINESS.since}.</p>
+            <p>Pure desi ghee, makhan, khalis doodh and dahi, made in Okara since {BUSINESS.since}.</p>
           </div>
           <div>
             <h3>Visit</h3>
