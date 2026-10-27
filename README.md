@@ -7,6 +7,7 @@ Website for Muhammad Dairy, Okara (est. 1975). Built with Next.js (static export
 - **Homepage text:** `app/page.js`
 - **Styles:** `app/globals.css`
 - **Video and photos:** `public/media/`
+- **Doodh & dahi (daily supply, weddings, hotels):** the two items are in `DAIRY_ITEMS` in `lib/config.js`; add a photo the same way as the herd photos below.
 - **Herd photos (buffalo, cow, care):** put the photo in `public/media/herd/` and set its `image` in the `HERD` list in `lib/config.js`. Until then an illustrated placeholder shows.
 
 ## Run locally

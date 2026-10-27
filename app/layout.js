@@ -5,10 +5,13 @@ import { SITE_URL } from "@/lib/config";
 export const metadata = {
   metadataBase: new URL(SITE_URL),
   alternates: { canonical: "./" },
-  keywords: ["desi ghee", "pure desi ghee", "desi ghee Okara", "makhan", "fresh cream ghee", "Muhammad Dairy"],
+  keywords: [
+    "desi ghee", "pure desi ghee", "desi ghee Okara", "makhan", "fresh cream ghee", "Muhammad Dairy",
+    "khalis doodh", "dahi", "daily milk Okara", "daily dahi Okara", "milk for weddings Okara", "dahi for weddings", "milk supplier for hotels Okara",
+  ],
   title: "Muhammad Dairy | Pure Desi Ghee in Okara since 1975",
   description:
-    "Serving Okara since 1975, Muhammad Dairy makes pure desi ghee from fresh cream in Okara (Sheikh Basti, GT Road), Pakistan. Watch how it's made and order on WhatsApp.",
+    "Serving Okara since 1975, Muhammad Dairy makes pure desi ghee from fresh cream in Okara (Sheikh Basti, GT Road), Pakistan, and supplies khalis doodh and dahi daily in Okara city and in bulk for weddings, functions and hotels. Order on WhatsApp.",
   openGraph: {
     title: "Muhammad Dairy | Pure Desi Ghee",
     description: "Fresh cream se khalis desi ghee. Order on WhatsApp: 0305 684 7007",

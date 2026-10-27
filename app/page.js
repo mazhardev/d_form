@@ -1,4 +1,4 @@
-import { BUSINESS, PRODUCTS, HERD, asset, formatPKR, waLink, mapsLink, SITE_URL } from "@/lib/config";
+import { BUSINESS, PRODUCTS, HERD, DAIRY_ITEMS, asset, formatPKR, waLink, mapsLink, SITE_URL } from "@/lib/config";
 import ProcessVideo from "./ProcessVideo";
 import { AddToCart, CartButton, WaIcon } from "./cart";
 
@@ -11,7 +11,7 @@ const jsonLd = {
       "@type": "LocalBusiness",
       "@id": `${SITE_URL}#business`,
       name: BUSINESS.name,
-      description: "Family dairy in Okara serving since 1975. Pure desi ghee made from fresh cream, churned and slow-cooked in small batches.",
+      description: "Family dairy in Okara serving since 1975. Pure desi ghee made from fresh cream, churned and slow-cooked in small batches. Khalis doodh and dahi supplied daily in Okara city, and in bulk for weddings, functions and hotels, including well-known hotels in Okara city.",
       foundingDate: String(BUSINESS.since),
       url: SITE_URL,
       telephone: "+" + BUSINESS.whatsappIntl,
@@ -54,6 +54,9 @@ const ICONS = {
   pin: <><path d="M12 21s-7-6.2-7-11.5a7 7 0 0 1 14 0C19 14.8 12 21 12 21z" /><circle cx="12" cy="9.5" r="2.5" /></>,
   phone: <path d="M21 16.4v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 3.1 3.7 2 2 0 0 1 5.1 1.5h3a2 2 0 0 1 2 1.7c.1.9.4 1.8.7 2.7a2 2 0 0 1-.5 2.1L9 9.3a16 16 0 0 0 6 6l1.3-1.3a2 2 0 0 1 2.1-.4c.9.3 1.8.6 2.7.7a2 2 0 0 1 1.7 2z" />,
   cart: <><path d="M6 7h12l-1 13H7L6 7z" /><path d="M9 7a3 3 0 0 1 6 0" /></>,
+  calendar: <><rect x="3" y="5" width="18" height="16" rx="2" /><path d="M3 10h18M8 3v4M16 3v4M8 14h2M14 14h2M8 17h2" /></>,
+  users: <><circle cx="9" cy="8" r="3.5" /><path d="M2.5 20c0-3.6 2.9-6 6.5-6s6.5 2.4 6.5 6" /><path d="M16 4.6a3.5 3.5 0 0 1 0 6.8M18 14.3c2.2.7 3.5 2.8 3.5 5.7" /></>,
+  hotel: <path d="M4 21V5a1 1 0 0 1 1-1h9a1 1 0 0 1 1 1v16M15 10h4a1 1 0 0 1 1 1v10M2 21h20M8 8h3M8 12h3M8 16h3" />,
   truck: <><path d="M3 6h11v10H3zM14 9h4l3 3.5V16h-7z" /><circle cx="7" cy="17.5" r="1.8" /><circle cx="17" cy="17.5" r="1.8" /></>,
 };
 
@@ -65,8 +68,8 @@ function Icon({ name, size = 20 }) {
   );
 }
 
-// Line drawings shown for a HERD entry until it has a real photo.
-const HERD_ART = {
+// Line drawings shown for a HERD or DAIRY_ITEMS entry until it has a real photo.
+const ART = {
   buffalo: (
     <>
       <path d="M74 64 C52 66 30 58 22 38 C20 32 24 30 28 34 C38 46 52 50 72 52" />
@@ -103,16 +106,39 @@ const HERD_ART = {
       <path d="M148 128 C148 120 156 112 156 112 C156 112 164 120 164 128 a8 8 0 0 1 -16 0 Z" />
     </>
   ),
+  milk: (
+    <>
+      <path d="M80 40 H120" />
+      <path d="M92 40 C92 32 108 32 108 40" />
+      <path d="M84 46 H116" />
+      <path d="M86 46 V56 C86 64 70 68 70 80 V150 C70 157 75 162 82 162 H118 C125 162 130 157 130 150 V80 C130 68 114 64 114 56 V46" />
+      <path d="M70 96 H130" />
+      <path d="M70 140 H130" />
+      <path d="M70 104 C58 104 54 110 54 118 C54 126 58 130 70 130" />
+      <path d="M130 104 C142 104 146 110 146 118 C146 126 142 130 130 130" />
+    </>
+  ),
+  dahi: (
+    <>
+      <path d="M44 96 H156" />
+      <path d="M48 96 C48 134 72 156 100 156 C128 156 152 134 152 96" />
+      <path d="M54 96 C60 82 78 74 100 74 C122 74 140 82 146 96" />
+      <path d="M80 157 L76 166 H124 L120 157" />
+      <path d="M78 88 C86 82 94 82 100 85" />
+      <path d="M108 84 C116 80 124 82 130 88" />
+      <path d="M62 116 H138" />
+    </>
+  ),
 };
 
-function HerdImage({ item }) {
+function ArtImage({ item }) {
   if (item.image) {
     return <img src={asset(item.image)} alt={item.name} loading="lazy" width="600" height="450" />;
   }
   return (
-    <div className="herd-placeholder" role="img" aria-label={`${item.name} illustration`}>
+    <div className="art-placeholder" role="img" aria-label={`${item.name} illustration`}>
       <svg viewBox="0 0 200 200" fill="none" stroke="currentColor" strokeWidth="2.6" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-        {HERD_ART[item.icon]}
+        {ART[item.icon]}
       </svg>
     </div>
   );
@@ -127,17 +153,27 @@ const PROMISES = [
 
 export default function Home() {
   const contactMsg = `Assalam o Alaikum ${BUSINESS.name}, I'd like to know more about your desi ghee.`;
+  const dairyMsg = [
+    `Assalam o Alaikum ${BUSINESS.name}, I'd like to order doodh / dahi.`,
+    "",
+    "Daily supply or one-time order: ",
+    "For (home / shop / hotel / wedding / function): ",
+    "Start date or event date: ",
+    "Doodh quantity: ",
+    "Dahi quantity: ",
+    "Area: ",
+  ].join("\n");
   return (
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
 
       <div className="announce">
         <div className="wrap announce-inner">
-          <span>Family dairy in Okara since {BUSINESS.since}</span>
-          <span className="announce-dot" aria-hidden="true" />
-          <span>Cash on delivery</span>
-          <span className="announce-dot" aria-hidden="true" />
-          <span>
+          <a href="#doodh-dahi">Khalis doodh &amp; dahi: daily in Okara, or for weddings</a>
+          <span className="announce-dot announce-wide" aria-hidden="true" />
+          <span className="announce-wide">Cash on delivery</span>
+          <span className="announce-dot announce-wide" aria-hidden="true" />
+          <span className="announce-wide">
             WhatsApp <a href={waLink(contactMsg)} target="_blank" rel="noopener">{BUSINESS.whatsappDisplay}</a>
           </span>
         </div>
@@ -157,6 +193,7 @@ export default function Home() {
           <nav className="nav" aria-label="Main">
             <a href="#process">How it&apos;s made</a>
             <a href="#shop">Shop</a>
+            <a href="#doodh-dahi">Doodh &amp; dahi</a>
             <a href="#story">Our story</a>
             <a href="#herd">Our herd</a>
             <a href="#contact">Visit us</a>
@@ -281,6 +318,62 @@ export default function Home() {
           </div>
         </section>
 
+        <section id="doodh-dahi" className="section dairy">
+          <div className="wrap dairy-grid">
+            <div className="dairy-copy">
+              <p className="kicker">Doodh &amp; dahi · daily or bulk</p>
+              <h2>Khalis doodh and dahi, every day or for your shaadi</h2>
+              <p className="dairy-urdu" lang="ur" dir="rtl">روزانہ اور شادی بیاہ کے لیے خالص دودھ اور دہی</p>
+              <p className="dairy-trust">
+                <span className="dairy-trust-icon"><Icon name="hotel" /></span>
+                Well-known hotels in Okara city already get their doodh and dahi from us.
+              </p>
+              <ul className="dairy-options">
+                <li>
+                  <span className="dairy-option-icon"><Icon name="calendar" /></span>
+                  <div>
+                    <strong>Daily supply in Okara city</strong>
+                    <p>Fresh doodh and dahi every day for your home, shop or hotel.</p>
+                  </div>
+                </li>
+                <li>
+                  <span className="dairy-option-icon"><Icon name="users" /></span>
+                  <div>
+                    <strong>Weddings &amp; functions</strong>
+                    <p>Bulk quantities on order. Tell us the date and how much you need.</p>
+                  </div>
+                </li>
+              </ul>
+              <p className="dairy-note">
+                Pure, nothing mixed in. We confirm the price and delivery with you personally on WhatsApp.
+              </p>
+              <div className="cta-row">
+                <a className="btn btn-wa btn-lg" href={waLink(dairyMsg)} target="_blank" rel="noopener">
+                  <WaIcon size={20} /> Order on WhatsApp
+                </a>
+                <a className="btn btn-light btn-lg" href={`tel:+${BUSINESS.whatsappIntl}`}>
+                  <Icon name="phone" size={18} /> Call {BUSINESS.whatsappDisplay}
+                </a>
+              </div>
+            </div>
+            <ul className="dairy-items">
+              {DAIRY_ITEMS.map((b) => (
+                <li key={b.id} className="dairy-card">
+                  <div className="dairy-img">
+                    <ArtImage item={b} />
+                  </div>
+                  <div className="dairy-body">
+                    <h3>{b.name}</h3>
+                    <p className="dairy-item-urdu" lang="ur" dir="rtl">{b.urdu}</p>
+                    <p className="dairy-text">{b.text}</p>
+                    <span className="dairy-tag">Daily or bulk · price on WhatsApp</span>
+                  </div>
+                </li>
+              ))}
+            </ul>
+          </div>
+        </section>
+
         <section id="story" className="section story">
           <div className="wrap story-grid">
             <div className="story-photos">
@@ -329,7 +422,7 @@ export default function Home() {
               {HERD.map((h) => (
                 <li key={h.id} className="herd-card">
                   <div className="herd-img">
-                    <HerdImage item={h} />
+                    <ArtImage item={h} />
                   </div>
                   <div className="herd-body">
                     <p className="herd-label">{h.label}</p>
@@ -399,6 +492,8 @@ export default function Home() {
               <a href={waLink(contactMsg)} target="_blank" rel="noopener">WhatsApp {BUSINESS.whatsappDisplay}</a>
               <br />
               Cash on delivery
+              <br />
+              <a href="#doodh-dahi">Doodh &amp; dahi: daily or for weddings</a>
             </p>
           </div>
         </div>

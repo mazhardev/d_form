@@ -343,7 +343,7 @@ h1, h2, h3 { margin: 0; line-height: 1.1; letter-spacing: -0.02em; font-weight: 
 @media (max-width: 560px) {
   .wrap { width: calc(100% - 32px); }
   .announce-inner { gap: 10px; font-size: 12.5px; }
-  .announce-inner > span:first-child, .announce-inner > .announce-dot:nth-child(2) { display: none; }
+  .announce-wide { display: none; }
   .header-inner { height: 64px; gap: 12px; }
   .brand-mark { width: 38px; height: 38px; }
   .brand-name { font-size: 17px; }
@@ -377,14 +377,14 @@ h1, h2, h3 { margin: 0; line-height: 1.1; letter-spacing: -0.02em; font-weight: 
 .herd-card { background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); overflow: hidden; }
 .herd-img { aspect-ratio: 4 / 3; overflow: hidden; background: var(--ghee-soft); }
 .herd-img img { width: 100%; height: 100%; object-fit: cover; }
-.herd-placeholder {
+.art-placeholder {
   width: 100%; height: 100%; display: grid; place-items: center; color: var(--ghee-deep);
   background:
     radial-gradient(closest-side at 50% 50%, rgba(255, 255, 255, .7), transparent 80%),
     repeating-linear-gradient(135deg, rgba(147, 96, 11, .06) 0 1px, transparent 1px 14px),
     var(--ghee-soft);
 }
-.herd-placeholder svg { width: 46%; height: auto; }
+.art-placeholder svg { width: 46%; height: auto; }
 .herd-body { padding: 20px 22px 24px; }
 .herd-label { margin: 0 0 6px; font-size: 13px; font-weight: 800; letter-spacing: .06em; text-transform: uppercase; color: var(--ghee-deep); }
 .herd-card h3 { font-size: 22px; }
@@ -395,4 +395,52 @@ h1, h2, h3 { margin: 0; line-height: 1.1; letter-spacing: -0.02em; font-weight: 
 }
 @media (max-width: 560px) {
   .herd-grid { grid-template-columns: 1fr; gap: 14px; }
+}
+
+/* ── Doodh & dahi ─────────────────────── */
+.dairy { background: var(--ghee-soft); }
+.dairy-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 56px; align-items: center; }
+.dairy-urdu { margin: 10px 0 0; font-size: clamp(20px, 2.2vw, 26px); color: var(--ghee-deep); }
+.dairy-trust {
+  display: flex; align-items: center; gap: 12px; margin: 16px 0 0; padding: 12px 16px 12px 12px; border-radius: 14px;
+  background: var(--surface); box-shadow: var(--shadow); font-size: 16px; font-weight: 700; max-width: 52ch;
+}
+.dairy-trust-icon {
+  width: 40px; height: 40px; border-radius: 10px; flex: none; display: grid; place-items: center;
+  background: var(--ghee); color: var(--dark);
+}
+.dairy-options { list-style: none; padding: 0; margin: 20px 0 0; display: grid; gap: 14px; }
+.dairy-options li { display: flex; gap: 14px; align-items: flex-start; }
+.dairy-option-icon {
+  width: 44px; height: 44px; border-radius: 12px; flex: none; display: grid; place-items: center;
+  background: var(--surface); color: var(--ink);
+}
+.dairy-options strong { font-size: 17px; }
+.dairy-options p { margin: 2px 0 0; font-size: 15.5px; color: var(--ink-2); }
+.dairy-note { margin: 18px 0 26px; font-size: 15px; color: var(--muted); max-width: 52ch; }
+.dairy-items { list-style: none; padding: 0; margin: 0; display: grid; grid-template-columns: 1fr 1fr; gap: 18px; }
+.dairy-card { background: var(--surface); border-radius: var(--radius); overflow: hidden; box-shadow: var(--shadow); display: flex; flex-direction: column; }
+.dairy-img { aspect-ratio: 1 / 1; }
+.dairy-img img { width: 100%; height: 100%; object-fit: cover; }
+.dairy .art-placeholder { background-color: var(--bg); }
+.dairy-body { padding: 18px 20px 20px; display: flex; flex-direction: column; flex: 1; }
+.dairy-card h3 { font-size: 21px; }
+.dairy-item-urdu { margin: 0; font-size: 18px; line-height: 1.9; color: var(--ghee-deep); text-align: left; }
+.dairy-text { margin: 4px 0 14px; font-size: 15px; color: var(--muted); flex: 1; }
+.dairy-tag {
+  align-self: flex-start; padding: 5px 10px; border-radius: 999px;
+  background: var(--ghee-soft); color: var(--ghee-deep); font-size: 13px; font-weight: 700;
+}
+
+@media (max-width: 900px) {
+  .dairy-grid { grid-template-columns: 1fr; gap: 36px; }
+}
+@media (max-width: 560px) {
+  .dairy-urdu { font-size: 18px; }
+  .dairy-trust { font-size: 15px; }
+  .dairy-items { gap: 12px; }
+  .dairy-body { padding: 14px; }
+  .dairy-card h3 { font-size: 17px; }
+  .dairy-text { font-size: 14px; }
+  .dairy-tag { font-size: 12px; }
 }
