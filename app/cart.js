@@ -9,17 +9,20 @@ export const useCart = () => useContext(CartCtx);
 const STORAGE_KEY = "md-cart-v1";
 
 export function CartProvider({ children }) {
-  const [items, setItems] = useState({}); // { productId: qty }
+  const [items, setItems] = useState(null); // { productId: qty }, null until loaded from storage
   const [open, setOpen] = useState(false);
   const [step, setStep] = useState("cart"); // cart | details
 
   useEffect(() => {
+    let saved = {};
     try {
-      const saved = JSON.parse(localStorage.getItem(STORAGE_KEY) || "{}");
-      if (saved && typeof saved === "object") setItems(saved);
+      saved = JSON.parse(localStorage.getItem(STORAGE_KEY) || "{}");
     } catch {}
+    setItems(saved && typeof saved === "object" ? saved : {});
   }, []);
+  // Skip the write until the saved cart has loaded, or the empty initial cart would overwrite it.
   useEffect(() => {
+    if (!items) return;
     try {
       localStorage.setItem(STORAGE_KEY, JSON.stringify(items));
     } catch {}
@@ -41,7 +44,7 @@ export function CartProvider({ children }) {
 
   const lines = useMemo(
     () =>
-      Object.entries(items)
+      Object.entries(items || {})
         .map(([id, qty]) => ({ product: PRODUCTS.find((p) => p.id === id), qty }))
         .filter((l) => l.product),
     [items]
@@ -54,21 +57,21 @@ export function CartProvider({ children }) {
   return (
     <CartCtx.Provider value={value}>
       {children}
-      <CartButton />
       <CartDrawer />
     </CartCtx.Provider>
   );
 }
 
-function CartButton() {
+export function CartButton() {
   const { count, setOpen } = useCart();
   return (
-    <button className="cart-fab" onClick={() => setOpen(true)} aria-label={`Open cart, ${count} items`}>
-      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+    <button className="cart-btn" onClick={() => setOpen(true)} aria-label={`Open cart, ${count} items`}>
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
         <path d="M6 7h12l-1 13H7L6 7z" />
         <path d="M9 7a3 3 0 0 1 6 0" />
       </svg>
-      {count > 0 && <span className="cart-fab-count">{count}</span>}
+      <span className="cart-btn-label">Cart</span>
+      {count > 0 && <span className="cart-count">{count}</span>}
     </button>
   );
 }

@@ -1,6 +1,6 @@
-import { BUSINESS, PRODUCTS, STEPS, HERD, asset, formatPKR, waLink, mapsLink, SITE_URL } from "@/lib/config";
-import HeroVideo from "./HeroVideo";
-import { AddToCart, WaIcon } from "./cart";
+import { BUSINESS, PRODUCTS, HERD, asset, formatPKR, waLink, mapsLink, SITE_URL } from "@/lib/config";
+import ProcessVideo from "./ProcessVideo";
+import { AddToCart, CartButton, WaIcon } from "./cart";
 
 const YEARS = new Date().getFullYear() - BUSINESS.since;
 
@@ -44,17 +44,29 @@ const jsonLd = {
   ],
 };
 
-function Ornament() {
+const ICONS = {
+  check: <path d="M20 6 9 17l-5-5" />,
+  play: <path d="M8 5.5v13l10.5-6.5z" fill="currentColor" stroke="none" />,
+  drop: <path d="M12 3c-3 4-6.5 7.6-6.5 11.5a6.5 6.5 0 0 0 13 0C18.5 10.6 15 7 12 3z" />,
+  flame: <path d="M12 22c3.9 0 7-2.6 7-6.6 0-3.3-2.2-5.6-3.6-7.4-.4 1.9-1.4 3-2.9 3.5.6-3.1-.8-6.3-3.6-8.5 0 4.1-4.9 6.6-4.9 12.4C4 19.4 8.1 22 12 22z" />,
+  filter: <path d="M3 4h18l-7 8.5V19l-4 2v-8.5z" />,
+  shield: <path d="M12 2.5 19 5v6c0 4.6-3 8.4-7 10.5C8 19.4 5 15.6 5 11V5z M9 11.5l2 2 4-4" />,
+  pin: <><path d="M12 21s-7-6.2-7-11.5a7 7 0 0 1 14 0C19 14.8 12 21 12 21z" /><circle cx="12" cy="9.5" r="2.5" /></>,
+  phone: <path d="M21 16.4v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 3.1 3.7 2 2 0 0 1 5.1 1.5h3a2 2 0 0 1 2 1.7c.1.9.4 1.8.7 2.7a2 2 0 0 1-.5 2.1L9 9.3a16 16 0 0 0 6 6l1.3-1.3a2 2 0 0 1 2.1-.4c.9.3 1.8.6 2.7.7a2 2 0 0 1 1.7 2z" />,
+  cart: <><path d="M6 7h12l-1 13H7L6 7z" /><path d="M9 7a3 3 0 0 1 6 0" /></>,
+  truck: <><path d="M3 6h11v10H3zM14 9h4l3 3.5V16h-7z" /><circle cx="7" cy="17.5" r="1.8" /><circle cx="17" cy="17.5" r="1.8" /></>,
+};
+
+function Icon({ name, size = 20 }) {
   return (
-    <svg className="ornament" width="120" height="14" viewBox="0 0 120 14" aria-hidden="true">
-      <path d="M0 7h48M72 7h48" stroke="currentColor" strokeWidth="1" />
-      <path d="M60 1l6 6-6 6-6-6z" fill="none" stroke="currentColor" strokeWidth="1" />
-      <circle cx="60" cy="7" r="1.6" fill="currentColor" />
+    <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+      {ICONS[name]}
     </svg>
   );
 }
 
-const ICONS = {
+// Line drawings shown for a HERD entry until it has a real photo.
+const HERD_ART = {
   buffalo: (
     <>
       <path d="M74 64 C52 66 30 58 22 38 C20 32 24 30 28 34 C38 46 52 50 72 52" />
@@ -95,16 +107,23 @@ const ICONS = {
 
 function HerdImage({ item }) {
   if (item.image) {
-    return <img src={asset(item.image)} alt={item.name} loading="lazy" width="600" height="750" />;
+    return <img src={asset(item.image)} alt={item.name} loading="lazy" width="600" height="450" />;
   }
   return (
     <div className="herd-placeholder" role="img" aria-label={`${item.name} illustration`}>
-      <svg viewBox="0 0 200 200" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-        {ICONS[item.icon]}
+      <svg viewBox="0 0 200 200" fill="none" stroke="currentColor" strokeWidth="2.6" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+        {HERD_ART[item.icon]}
       </svg>
     </div>
   );
 }
+
+const PROMISES = [
+  { icon: "drop", title: "Real fresh cream", text: "Our ghee starts with cream, never vegetable oil or ready-made butter." },
+  { icon: "flame", title: "Cooked slowly", text: "Low, patient heat brings out the deep golden colour and danedar texture." },
+  { icon: "filter", title: "Strained clean", text: "Every batch is filtered before it is weighed, sealed and packed." },
+  { icon: "shield", title: "A name you know", text: `${YEARS} years in Okara. Every order is confirmed by us personally.` },
+];
 
 export default function Home() {
   const contactMsg = `Assalam o Alaikum ${BUSINESS.name}, I'd like to know more about your desi ghee.`;
@@ -112,31 +131,42 @@ export default function Home() {
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
 
-      <div className="topbar">
-        <div className="wrap topbar-inner">
-          <span>Serving Okara since {BUSINESS.since}</span>
-          <span className="topbar-sep" aria-hidden="true">·</span>
-          <span>Orders on WhatsApp: <a href={waLink(contactMsg)} target="_blank" rel="noopener">{BUSINESS.whatsappDisplay}</a></span>
+      <div className="announce">
+        <div className="wrap announce-inner">
+          <span>Family dairy in Okara since {BUSINESS.since}</span>
+          <span className="announce-dot" aria-hidden="true" />
+          <span>Cash on delivery</span>
+          <span className="announce-dot" aria-hidden="true" />
+          <span>
+            WhatsApp <a href={waLink(contactMsg)} target="_blank" rel="noopener">{BUSINESS.whatsappDisplay}</a>
+          </span>
         </div>
       </div>
 
-      <header className="nav">
-        <div className="wrap nav-inner">
-          <a href="#top" className="logo" aria-label={`${BUSINESS.name}, home`}>
-            <span className="logo-seal" aria-hidden="true"><span>M</span></span>
-            <span className="logo-text">
-              <span className="logo-name">Muhammad Dairy</span>
-              <span className="logo-est">Est. {BUSINESS.since} · Okara</span>
+      <header className="header">
+        <div className="wrap header-inner">
+          <a href="#top" className="brand" aria-label={`${BUSINESS.name}, home`}>
+            <span className="brand-mark" aria-hidden="true">
+              <Icon name="drop" size={22} />
+            </span>
+            <span className="brand-text">
+              <span className="brand-name">{BUSINESS.name}</span>
+              <span className="brand-sub">Est. {BUSINESS.since} · Okara</span>
             </span>
           </a>
-          <nav className="nav-links" aria-label="Main">
-            <a href="#heritage">Our story</a>
-            <a href="#herd">Our herd</a>
-            <a href="#process">Process</a>
+          <nav className="nav" aria-label="Main">
+            <a href="#process">How it&apos;s made</a>
             <a href="#shop">Shop</a>
+            <a href="#story">Our story</a>
+            <a href="#herd">Our herd</a>
             <a href="#contact">Visit us</a>
           </nav>
-          <a className="btn btn-gold btn-sm nav-cta" href="#shop">Order now</a>
+          <div className="header-actions">
+            <a className="btn btn-wa btn-sm header-wa" href={waLink(contactMsg)} target="_blank" rel="noopener">
+              <WaIcon size={16} /> {BUSINESS.whatsappDisplay}
+            </a>
+            <CartButton />
+          </div>
         </div>
       </header>
 
@@ -144,125 +174,84 @@ export default function Home() {
         <section className="hero">
           <div className="wrap hero-grid">
             <div className="hero-copy">
-              <p className="eyebrow">Family dairy · Est. {BUSINESS.since}</p>
-              <h1>
-                Pure desi ghee,
-                <br />
-                <em>crafted since {BUSINESS.since}.</em>
-              </h1>
+              <p className="pill">
+                <span className="pill-dot" aria-hidden="true" /> Okara, Punjab · since {BUSINESS.since}
+              </p>
+              <h1>Pure desi ghee, made from fresh cream.</h1>
+              <p className="hero-urdu" lang="ur" dir="rtl">تازہ بالائی سے خالص دیسی گھی</p>
               <p className="lede">
-                For over {YEARS} years, families in Okara have trusted us for honest dairy. Our ghee begins with fresh
-                cream, is churned by hand into makhan, and is slow-cooked until golden, the same way it always has been.
+                For over {YEARS} years, families in Okara have bought their ghee from us. We churn fresh cream into
+                makhan and cook it slowly in our own kitchen, in small batches. Nothing else goes in.
               </p>
-              <div className="hero-ctas">
-                <a className="btn btn-gold btn-lg" href="#shop">Shop desi ghee</a>
-                <a className="btn btn-outline-light btn-lg" href="#process">See how it&apos;s made</a>
+              <div className="cta-row">
+                <a className="btn btn-primary btn-lg" href="#shop">Shop desi ghee</a>
+                <a className="btn btn-light btn-lg" href="#process">
+                  <Icon name="play" size={16} /> Watch how it&apos;s made
+                </a>
               </div>
-              <dl className="hero-stats">
-                <div><dt>{YEARS}+</dt><dd>years of dairy</dd></div>
-                <div><dt>100%</dt><dd>fresh cream</dd></div>
-                <div><dt>Small</dt><dd>batches, slow-cooked</dd></div>
-              </dl>
+              <ul className="checks">
+                <li><Icon name="check" size={16} /> 100% fresh cream</li>
+                <li><Icon name="check" size={16} /> No vegetable oil</li>
+                <li><Icon name="check" size={16} /> Cash on delivery</li>
+              </ul>
             </div>
-            <HeroVideo />
-          </div>
-        </section>
 
-        <section id="heritage" className="section heritage">
-          <div className="wrap heritage-grid">
-            <div className="heritage-year" aria-hidden="true">
-              <span className="since">since</span>
-              <span className="year">{BUSINESS.since}</span>
-            </div>
-            <div className="heritage-copy">
-              <p className="eyebrow dark">Our story</p>
-              <h2>Five decades of trust, one batch at a time.</h2>
-              <Ornament />
-              <p>
-                Muhammad Dairy has served the families of Okara since {BUSINESS.since}. Through all these years we have
-                kept one simple promise: give people the same pure dairy we would serve at our own table.
-              </p>
-              <p>
-                Generations of customers still come back to us for that reason. We have never changed how we make our
-                desi ghee: fresh cream, patient hands and slow heat.
-              </p>
-              <p className="signature">The Muhammad Dairy family</p>
-            </div>
-          </div>
-        </section>
-
-        <section id="herd" className="section herd">
-          <div className="wrap">
-            <div className="herd-head">
-              <div>
-                <p className="eyebrow">Our herd</p>
-                <h2>Good ghee starts with healthy animals.</h2>
-                <Ornament />
+            <div className="hero-media">
+              <div className="hero-photos">
+                <img src={asset("/media/ghee-1kg.jpg")} alt="Golden desi ghee in a steel pot" width="600" height="600" />
+                <img src={asset("/media/step2.jpg")} alt="Makhan being churned by hand" width="480" height="549" />
+                <img src={asset("/media/step4.jpg")} alt="Makhan slow-cooking into ghee" width="480" height="549" />
               </div>
-              <p className="herd-lede">
-                Okara sits in the heart of Punjab&apos;s dairy country, home of the famous Nili-Ravi buffalo and the
-                Sahiwal cow. Their rich, creamy milk is where every batch of our desi ghee begins.
-              </p>
+              <a className="hero-film" href="#process">
+                <img src={asset("/media/poster.jpg")} alt="" width="54" height="72" />
+                <span className="hero-film-text">
+                  <strong>From cream to ghee</strong>
+                  <span>Watch the 1-minute video</span>
+                </span>
+                <span className="hero-film-play" aria-hidden="true"><Icon name="play" size={14} /></span>
+              </a>
+              <div className="hero-badge">
+                <strong>{YEARS}+</strong>
+                <span>years in Okara</span>
+              </div>
             </div>
-            <ul className="herd-grid">
-              {HERD.map((h) => (
-                <li key={h.id} className="herd-card">
-                  <div className="herd-img">
-                    <HerdImage item={h} />
-                  </div>
-                  <p className="herd-label">{h.label}</p>
-                  <h3>{h.name}</h3>
-                  <p className="herd-text">{h.text}</p>
-                </li>
-              ))}
-            </ul>
           </div>
         </section>
 
-        <section id="process" className="section process">
+        <section id="process" className="section film-section">
           <div className="wrap">
-            <div className="section-head center">
-              <p className="eyebrow dark">From cream to ghee</p>
-              <h2>Seven honest steps. Nothing added.</h2>
-              <Ornament />
-              <p className="section-lede">
-                Everything in our video happens in our own kitchen, by hand, the way we have done it for {YEARS} years.
-              </p>
-            </div>
-            <ol className="steps">
-              {STEPS.map((s, i) => (
-                <li key={s.title} className="step">
-                  <div className="step-img">
-                    <img src={asset(s.img)} alt={s.title} loading="lazy" width="480" height="549" />
-                  </div>
-                  <span className="step-num">{String(i + 1).padStart(2, "0")}</span>
-                  <h3>{s.title}</h3>
-                  <p>{s.text}</p>
-                </li>
-              ))}
-            </ol>
+            <ProcessVideo>
+              <div className="section-head">
+                <p className="kicker">From cream to ghee</p>
+                <h2>See exactly how your ghee is made</h2>
+                <p className="section-lede">
+                  Real footage from our kitchen, start to finish in about a minute. Tap a step to jump to it.
+                </p>
+              </div>
+            </ProcessVideo>
           </div>
         </section>
 
         <section id="shop" className="section shop">
           <div className="wrap">
-            <div className="section-head center">
-              <p className="eyebrow dark">The shop</p>
-              <h2>Order fresh, delivered to your door</h2>
-              <Ornament />
+            <div className="section-head split">
+              <div>
+                <p className="kicker">Shop</p>
+                <h2>Order desi ghee &amp; makhan</h2>
+              </div>
               <p className="section-lede">
-                Add to your cart and check out. Your order comes straight to us on WhatsApp, and we confirm it personally.
+                Add what you need to your cart and send the order on WhatsApp. We confirm every order personally.
               </p>
             </div>
             <div className="products">
               {PRODUCTS.map((p) => (
                 <article key={p.id} className="product">
                   <div className="product-img">
-                    <img src={asset(p.image)} alt={`${p.name} ${p.size}`} loading="lazy" width="480" height="549" />
+                    <img src={asset(p.image)} alt={`${p.name} ${p.size}`} loading="lazy" width="480" height="480" />
+                    <span className="product-size">{p.size}</span>
                   </div>
                   <div className="product-body">
-                    <p className="product-size">{p.size}</p>
-                    <h3>{p.name}</h3>
+                    <h3>{p.name} <span>{p.size}</span></h3>
                     <p className="product-note">{p.note}</p>
                     <div className="product-foot">
                       <span className="price">
@@ -274,85 +263,147 @@ export default function Home() {
                 </article>
               ))}
             </div>
-            <p className="shop-note">Cash on delivery · Bulk and event orders welcome</p>
+
+            <ol className="how">
+              <li>
+                <span className="how-icon"><Icon name="cart" /></span>
+                <div><strong>1. Add to cart</strong><p>Pick your packs and how many you need.</p></div>
+              </li>
+              <li>
+                <span className="how-icon"><WaIcon size={20} /></span>
+                <div><strong>2. Send on WhatsApp</strong><p>Checkout opens WhatsApp with your order already written.</p></div>
+              </li>
+              <li>
+                <span className="how-icon"><Icon name="truck" /></span>
+                <div><strong>3. We confirm &amp; deliver</strong><p>Pay cash on delivery. Bulk and event orders welcome.</p></div>
+              </li>
+            </ol>
           </div>
         </section>
 
-        <section className="section promise">
-          <div className="wrap">
-            <div className="section-head center">
-              <p className="eyebrow">Our promise</p>
-              <h2>Why Okara has trusted us since {BUSINESS.since}</h2>
-              <Ornament />
+        <section id="story" className="section story">
+          <div className="wrap story-grid">
+            <div className="story-photos">
+              <img src={asset("/media/step1.jpg")} alt="Fresh cream being collected from milk" loading="lazy" width="480" height="549" />
+              <img src={asset("/media/step7.jpg")} alt="Packs of fresh desi ghee" loading="lazy" width="480" height="549" />
             </div>
-            <ul className="promise-grid">
-              <li>
-                <span className="promise-num">I</span>
-                <h3>Real fresh cream</h3>
-                <p>Our ghee starts with cream, never vegetable oil or ready-made butter.</p>
-              </li>
-              <li>
-                <span className="promise-num">II</span>
-                <h3>Cooked slowly</h3>
-                <p>Low, patient heat brings out the deep golden colour and danedar texture.</p>
-              </li>
-              <li>
-                <span className="promise-num">III</span>
-                <h3>Strained clean</h3>
-                <p>Every batch is filtered before it is sealed and packed.</p>
-              </li>
-              <li>
-                <span className="promise-num">IV</span>
-                <h3>A name you know</h3>
-                <p>{YEARS} years in Okara. Every order is confirmed by us personally.</p>
-              </li>
+            <div className="story-copy">
+              <p className="kicker">Our story</p>
+              <h2>A family dairy, serving Okara since {BUSINESS.since}</h2>
+              <p>
+                Muhammad Dairy has served the families of Okara since {BUSINESS.since}. Through all these years we have
+                kept one simple promise: give people the same pure dairy we would serve at our own table.
+              </p>
+              <p>
+                Generations of customers still come back to us for that reason. We have never changed how we make our
+                desi ghee: fresh cream, patient hands and slow heat.
+              </p>
+              <ul className="promises">
+                {PROMISES.map((p) => (
+                  <li key={p.title}>
+                    <span className="promise-icon"><Icon name={p.icon} /></span>
+                    <div>
+                      <strong>{p.title}</strong>
+                      <p>{p.text}</p>
+                    </div>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          </div>
+        </section>
+
+        <section id="herd" className="section herd">
+          <div className="wrap">
+            <div className="section-head split">
+              <div>
+                <p className="kicker">Our herd</p>
+                <h2>Good ghee starts with healthy animals</h2>
+              </div>
+              <p className="section-lede">
+                Okara sits in the heart of Punjab&apos;s dairy country, home of the famous Nili-Ravi buffalo and the
+                Sahiwal cow. Their rich, creamy milk is where every batch of our desi ghee begins.
+              </p>
+            </div>
+            <ul className="herd-grid">
+              {HERD.map((h) => (
+                <li key={h.id} className="herd-card">
+                  <div className="herd-img">
+                    <HerdImage item={h} />
+                  </div>
+                  <div className="herd-body">
+                    <p className="herd-label">{h.label}</p>
+                    <h3>{h.name}</h3>
+                    <p className="herd-text">{h.text}</p>
+                  </div>
+                </li>
+              ))}
             </ul>
           </div>
         </section>
 
-        <section id="contact" className="section contact">
-          <div className="wrap contact-grid">
-            <div className="contact-copy">
-              <p className="eyebrow dark">Visit or message us</p>
-              <h2>Come by the dairy, or order from home.</h2>
-              <Ornament />
-              <dl className="contact-list">
-                <div>
-                  <dt>Address</dt>
-                  <dd><a href={mapsLink()} target="_blank" rel="noopener">{BUSINESS.address}</a></dd>
-                </div>
-                <div>
-                  <dt>WhatsApp &amp; phone</dt>
-                  <dd><a href={`tel:+${BUSINESS.whatsappIntl}`}>{BUSINESS.whatsappDisplay}</a></dd>
-                </div>
-                <div>
-                  <dt>Serving since</dt>
-                  <dd>{BUSINESS.since}</dd>
-                </div>
-              </dl>
-              <div className="hero-ctas">
+        <section id="contact" className="section visit">
+          <div className="wrap visit-grid">
+            <div className="visit-copy">
+              <p className="kicker">Visit or message us</p>
+              <h2>Come to the dairy, or order from home</h2>
+              <ul className="visit-list">
+                <li>
+                  <span className="visit-icon"><Icon name="pin" /></span>
+                  <div>
+                    <span>Address</span>
+                    <a href={mapsLink()} target="_blank" rel="noopener">{BUSINESS.address}</a>
+                  </div>
+                </li>
+                <li>
+                  <span className="visit-icon"><Icon name="phone" /></span>
+                  <div>
+                    <span>WhatsApp &amp; phone</span>
+                    <a href={`tel:+${BUSINESS.whatsappIntl}`}>{BUSINESS.whatsappDisplay}</a>
+                  </div>
+                </li>
+              </ul>
+              <div className="cta-row">
                 <a className="btn btn-wa btn-lg" href={waLink(contactMsg)} target="_blank" rel="noopener">
                   <WaIcon size={20} /> Chat on WhatsApp
                 </a>
-                <a className="btn btn-outline btn-lg" href={mapsLink()} target="_blank" rel="noopener">Get directions</a>
+                <a className="btn btn-light btn-lg" href={mapsLink()} target="_blank" rel="noopener">Get directions</a>
               </div>
             </div>
-            <div className="contact-photo">
-              <img src={asset("/media/step7.jpg")} alt="Freshly packed Muhammad Dairy desi ghee" loading="lazy" width="480" height="549" />
-              <div className="contact-photo-tag"><span>Est.</span>{BUSINESS.since}</div>
+            <div className="visit-map">
+              <iframe
+                title={`Map showing ${BUSINESS.name}`}
+                src={`https://www.google.com/maps?q=${encodeURIComponent(BUSINESS.address)}&output=embed`}
+                loading="lazy"
+                referrerPolicy="no-referrer-when-downgrade"
+              />
             </div>
           </div>
         </section>
       </main>
 
       <footer className="footer">
-        <div className="wrap footer-inner">
+        <div className="wrap footer-grid">
           <div className="footer-brand">
-            <span className="logo-name">Muhammad Dairy</span>
-            <span>Pure desi ghee · Okara · Est. {BUSINESS.since}</span>
+            <span className="brand-name">{BUSINESS.name}</span>
+            <span className="footer-urdu" lang="ur" dir="rtl">محمد ڈیری، اوکاڑہ</span>
+            <p>Pure desi ghee from fresh cream, made in Okara since {BUSINESS.since}.</p>
           </div>
-          <p>{BUSINESS.address}</p>
-          <p>© {new Date().getFullYear()} {BUSINESS.name}. All rights reserved.</p>
+          <div>
+            <h3>Visit</h3>
+            <p>{BUSINESS.address}</p>
+          </div>
+          <div>
+            <h3>Order</h3>
+            <p>
+              <a href={waLink(contactMsg)} target="_blank" rel="noopener">WhatsApp {BUSINESS.whatsappDisplay}</a>
+              <br />
+              Cash on delivery
+            </p>
+          </div>
+        </div>
+        <div className="wrap footer-base">
+          © {new Date().getFullYear()} {BUSINESS.name}. All rights reserved.
         </div>
       </footer>
     </>

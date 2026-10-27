@@ -17,7 +17,7 @@ export const metadata = {
   },
 };
 
-export const viewport = { themeColor: "#1f2a1c" };
+export const viewport = { themeColor: "#fbf8f2" };
 
 export default function RootLayout({ children }) {
   return (
@@ -26,7 +26,7 @@ export default function RootLayout({ children }) {
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="" />
         <link
-          href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;0,700;1,500&family=Manrope:wght@400;500;600;700&display=swap"
+          href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;500;600;700;800&family=Noto+Nastaliq+Urdu:wght@500;600&display=swap"
           rel="stylesheet"
         />
       </head>
