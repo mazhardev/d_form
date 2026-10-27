@@ -1,4 +1,4 @@
-import { BUSINESS, PRODUCTS, STEPS, asset, formatPKR, waLink, mapsLink, SITE_URL } from "@/lib/config";
+import { BUSINESS, PRODUCTS, STEPS, HERD, asset, formatPKR, waLink, mapsLink, SITE_URL } from "@/lib/config";
 import HeroVideo from "./HeroVideo";
 import { AddToCart, WaIcon } from "./cart";
 
@@ -54,6 +54,58 @@ function Ornament() {
   );
 }
 
+const ICONS = {
+  buffalo: (
+    <>
+      <path d="M74 64 C52 66 30 58 22 38 C20 32 24 30 28 34 C38 46 52 50 72 52" />
+      <path d="M126 64 C148 66 170 58 178 38 C180 32 176 30 172 34 C162 46 148 50 128 52" />
+      <path d="M72 52 C84 46 116 46 128 52 C132 70 130 92 124 112 C120 128 118 146 112 156 C106 164 94 164 88 156 C82 146 80 128 76 112 C70 92 68 70 72 52 Z" />
+      <path d="M73 72 C60 70 46 76 40 86 C52 92 66 88 76 82" />
+      <path d="M127 72 C140 70 154 76 160 86 C148 92 134 88 124 82" />
+      <circle cx="90" cy="93" r="2.4" fill="currentColor" stroke="none" />
+      <circle cx="110" cy="93" r="2.4" fill="currentColor" stroke="none" />
+      <ellipse cx="93" cy="150" rx="3" ry="4.5" />
+      <ellipse cx="107" cy="150" rx="3" ry="4.5" />
+    </>
+  ),
+  cow: (
+    <>
+      <path d="M80 52 C76 42 72 36 66 34" />
+      <path d="M120 52 C124 42 128 36 134 34" />
+      <path d="M76 54 C88 46 112 46 124 54 C128 74 126 96 120 116 C116 132 116 146 110 156 C104 164 96 164 90 156 C84 146 84 132 80 116 C74 96 72 74 76 54 Z" />
+      <path d="M77 70 C62 70 46 82 40 100 C40 106 46 106 50 102 C60 92 70 86 79 84" />
+      <path d="M123 70 C138 70 154 82 160 100 C160 106 154 106 150 102 C140 92 130 86 121 84" />
+      <circle cx="92" cy="95" r="2.4" fill="currentColor" stroke="none" />
+      <circle cx="108" cy="95" r="2.4" fill="currentColor" stroke="none" />
+      <ellipse cx="94" cy="150" rx="3" ry="4.5" />
+      <ellipse cx="106" cy="150" rx="3" ry="4.5" />
+    </>
+  ),
+  care: (
+    <>
+      <path d="M100 160 V70" />
+      <path d="M100 120 C80 118 64 104 60 84 C80 84 96 98 100 120" />
+      <path d="M100 100 C120 98 136 84 140 64 C120 64 104 78 100 100" />
+      <path d="M100 76 C92 66 92 52 100 40 C108 52 108 66 100 76" />
+      <path d="M60 160 H140" />
+      <path d="M148 128 C148 120 156 112 156 112 C156 112 164 120 164 128 a8 8 0 0 1 -16 0 Z" />
+    </>
+  ),
+};
+
+function HerdImage({ item }) {
+  if (item.image) {
+    return <img src={asset(item.image)} alt={item.name} loading="lazy" width="600" height="750" />;
+  }
+  return (
+    <div className="herd-placeholder" role="img" aria-label={`${item.name} illustration`}>
+      <svg viewBox="0 0 200 200" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+        {ICONS[item.icon]}
+      </svg>
+    </div>
+  );
+}
+
 export default function Home() {
   const contactMsg = `Assalam o Alaikum ${BUSINESS.name}, I'd like to know more about your desi ghee.`;
   return (
@@ -79,6 +131,7 @@ export default function Home() {
           </a>
           <nav className="nav-links" aria-label="Main">
             <a href="#heritage">Our story</a>
+            <a href="#herd">Our herd</a>
             <a href="#process">Process</a>
             <a href="#shop">Shop</a>
             <a href="#contact">Visit us</a>
@@ -135,6 +188,34 @@ export default function Home() {
               </p>
               <p className="signature">The Muhammad Dairy family</p>
             </div>
+          </div>
+        </section>
+
+        <section id="herd" className="section herd">
+          <div className="wrap">
+            <div className="herd-head">
+              <div>
+                <p className="eyebrow">Our herd</p>
+                <h2>Good ghee starts with healthy animals.</h2>
+                <Ornament />
+              </div>
+              <p className="herd-lede">
+                Okara sits in the heart of Punjab&apos;s dairy country, home of the famous Nili-Ravi buffalo and the
+                Sahiwal cow. Their rich, creamy milk is where every batch of our desi ghee begins.
+              </p>
+            </div>
+            <ul className="herd-grid">
+              {HERD.map((h) => (
+                <li key={h.id} className="herd-card">
+                  <div className="herd-img">
+                    <HerdImage item={h} />
+                  </div>
+                  <p className="herd-label">{h.label}</p>
+                  <h3>{h.name}</h3>
+                  <p className="herd-text">{h.text}</p>
+                </li>
+              ))}
+            </ul>
           </div>
         </section>
 

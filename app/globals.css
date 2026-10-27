@@ -320,3 +320,43 @@ h1, h2, h3 { font-family: var(--serif); font-weight: 600; line-height: 1.05; mar
   html { scroll-behavior: auto; }
   *, .hero-seal svg { transition: none !important; animation: none !important; }
 }
+
+/* ── Herd ─────────────────────────────── */
+.herd {
+  color: var(--ivory);
+  background:
+    radial-gradient(800px 420px at 100% 0%, rgba(201, 162, 74, .14), transparent 60%),
+    var(--forest);
+}
+.herd h2 { color: #fff; max-width: 16ch; }
+.herd-head { display: grid; grid-template-columns: 1fr 1fr; gap: 56px; align-items: end; margin-bottom: 56px; }
+.herd-lede { margin: 0; color: rgba(250, 246, 236, .72); font-size: 17.5px; max-width: 50ch; }
+.herd-grid { list-style: none; padding: 0; margin: 0; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 32px; }
+.herd-img {
+  aspect-ratio: 4 / 5; overflow: hidden; border-radius: 200px 200px 2px 2px;
+  outline: 1px solid rgba(221, 184, 92, .45); outline-offset: 8px; margin: 8px 8px 0;
+}
+.herd-img img { width: 100%; height: 100%; object-fit: cover; transition: transform .6s ease; }
+.herd-card:hover .herd-img img { transform: scale(1.04); }
+.herd-placeholder {
+  width: 100%; height: 100%; display: grid; place-items: center; color: var(--gold-bright);
+  background:
+    radial-gradient(closest-side at 50% 45%, rgba(221, 184, 92, .16), transparent 75%),
+    repeating-linear-gradient(135deg, rgba(221, 184, 92, .05) 0 1px, transparent 1px 14px),
+    var(--forest-2);
+}
+.herd-placeholder svg { width: 58%; height: auto; transition: transform .6s ease; }
+.herd-card:hover .herd-placeholder svg { transform: scale(1.05); }
+.herd-label { margin: 30px 0 8px; font: 700 11px/1.4 var(--sans); letter-spacing: .22em; text-transform: uppercase; color: var(--gold); }
+.herd-card h3 { font-size: 32px; font-weight: 500; color: #fff; }
+.herd-text { margin: 10px 0 0; color: rgba(250, 246, 236, .68); font-size: 15px; max-width: 36ch; }
+
+@media (max-width: 880px) {
+  .herd-head { grid-template-columns: 1fr; gap: 20px; }
+  .herd-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); row-gap: 48px; }
+}
+@media (max-width: 560px) {
+  .herd-grid { grid-template-columns: 1fr; }
+  .herd-img { aspect-ratio: 1 / 1; }
+  .herd-placeholder svg { width: 48%; }
+}
