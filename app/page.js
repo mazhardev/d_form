@@ -15,8 +15,12 @@ const FAQS = [
     a: `At ${BUSINESS.name} on GT Road, Sheikh Basti, opposite Azhar Residences in Okara. We have made khalis desi ghee here since ${BUSINESS.since}. Visit the dairy, or order on WhatsApp at ${BUSINESS.whatsappDisplay} and pay cash on delivery.`,
   },
   {
-    q: "What is the price of desi ghee in Okara?",
-    a: `Our current prices are ${PRICE_LIST}. For bulk and event orders, message us on WhatsApp for a quote.`,
+    q: "What is the price of desi ghee in Pakistan?",
+    a: `Our current prices are ${PRICE_LIST}. To other cities in Pakistan, courier charges are added on top. For bulk and event orders, message us on WhatsApp for a quote.`,
+  },
+  {
+    q: "Can I order desi ghee online from other cities in Pakistan?",
+    a: `Yes. We courier our khalis desi ghee anywhere in Pakistan — Lahore, Karachi, Islamabad, Faisalabad, Multan and beyond. Message us on WhatsApp at ${BUSINESS.whatsappDisplay} with your city and how many packs you want, and we confirm the price, courier charges and payment. Fresh milk and dahi are perishable, so those are Okara city only.`,
   },
   {
     q: "How can I tell if desi ghee is pure?",
@@ -32,7 +36,7 @@ const FAQS = [
   },
   {
     q: "Do you deliver, and how do I pay?",
-    a: "We deliver to your door and you pay cash on delivery. Every order is confirmed with you personally on WhatsApp first.",
+    a: "In Okara we deliver to your door and you pay cash on delivery. For desi ghee couriered to other cities in Pakistan, we confirm the total and courier charges on WhatsApp, and you pay by bank transfer or a mobile wallet like Easypaisa or JazzCash before we ship. Every order is confirmed with you personally first.",
   },
 ];
 
@@ -43,7 +47,7 @@ const jsonLd = {
       "@type": "LocalBusiness",
       "@id": `${SITE_URL}#business`,
       name: BUSINESS.name,
-      description: "Family dairy in Okara serving since 1975. Pure desi ghee made from fresh cream, churned and slow-cooked in small batches. Khalis doodh and dahi supplied daily in Okara city, and in bulk for weddings, functions and hotels, including well-known hotels in Okara city.",
+      description: "Family dairy in Okara serving since 1975. Pure desi ghee made from fresh cream, churned and slow-cooked in small batches and couriered anywhere in Pakistan. Khalis doodh and dahi supplied daily in Okara city, and in bulk for weddings, functions and hotels.",
       foundingDate: String(BUSINESS.since),
       url: SITE_URL,
       telephone: "+" + BUSINESS.whatsappIntl,
@@ -56,8 +60,11 @@ const jsonLd = {
         addressCountry: "PK",
       },
       hasMap: mapsLink(),
-      areaServed: { "@type": "City", name: "Okara" },
-      paymentAccepted: "Cash",
+      areaServed: [
+        { "@type": "City", name: "Okara" },
+        { "@type": "Country", name: "Pakistan" },
+      ],
+      paymentAccepted: "Cash on delivery, Bank transfer, Easypaisa, JazzCash",
       currenciesAccepted: "PKR",
       knowsAbout: ["Desi ghee", "Makhan", "Milk", "Dahi"],
       makesOffer: DAIRY_ITEMS.map((d) => ({
@@ -227,9 +234,9 @@ export default function Home() {
 
       <div className="announce">
         <div className="wrap announce-inner">
-          <a href="#doodh-dahi">Khalis doodh &amp; dahi: daily in Okara, or for weddings</a>
+          <a href="#shop">Khalis desi ghee, couriered anywhere in Pakistan</a>
           <span className="announce-dot announce-wide" aria-hidden="true" />
-          <span className="announce-wide">Cash on delivery</span>
+          <span className="announce-wide">Doodh &amp; dahi daily in Okara</span>
           <span className="announce-dot announce-wide" aria-hidden="true" />
           <span className="announce-wide">
             WhatsApp <a href={waLink(contactMsg)} target="_blank" rel="noopener">{BUSINESS.whatsappDisplay}</a>
@@ -276,7 +283,8 @@ export default function Home() {
               <p className="hero-urdu" lang="ur" dir="rtl">تازہ بالائی سے خالص دیسی گھی</p>
               <p className="lede">
                 For over {YEARS} years, families in Okara have bought their ghee from us. We churn fresh cream into
-                makhan and cook it slowly in our own kitchen, in small batches. Nothing else goes in.
+                makhan and cook it slowly in our own kitchen, in small batches. Nothing else goes in — and now we
+                courier it anywhere in Pakistan.
               </p>
               <div className="cta-row">
                 <a className="btn btn-primary btn-lg" href="#shop">Shop desi ghee</a>
@@ -287,7 +295,7 @@ export default function Home() {
               <ul className="checks">
                 <li><Icon name="check" size={16} /> 100% fresh cream</li>
                 <li><Icon name="check" size={16} /> No vegetable oil</li>
-                <li><Icon name="check" size={16} /> Cash on delivery</li>
+                <li><Icon name="check" size={16} /> Couriered across Pakistan</li>
               </ul>
             </div>
 
@@ -332,10 +340,11 @@ export default function Home() {
             <div className="section-head split">
               <div>
                 <p className="kicker">Shop</p>
-                <h2>Buy desi ghee &amp; makhan in Okara</h2>
+                <h2>Buy pure desi ghee online in Pakistan</h2>
               </div>
               <p className="section-lede">
-                Add what you need to your cart and send the order on WhatsApp. We confirm every order personally.
+                Add what you need to your cart and send the order on WhatsApp. We courier desi ghee anywhere in
+                Pakistan; makhan, doodh and dahi are for Okara city. Every order is confirmed personally.
               </p>
             </div>
             <div className="products">
@@ -517,7 +526,14 @@ export default function Home() {
                 Ghee mixed with oil or banaspati usually smells flat and feels oily. We would rather show you than ask
                 you to trust us, so <a href="#process">watch every step of how ours is made</a>.
               </p>
-              <h3>Doodh and dahi, daily or in bulk</h3>
+              <h3>Order desi ghee online, anywhere in Pakistan</h3>
+              <p>
+                You don&apos;t have to be in Okara to get our ghee. We <strong>courier khalis desi ghee across
+                Pakistan</strong> — Lahore, Karachi, Islamabad, Faisalabad, Multan, Rawalpindi and every other city.
+                Tell us your city and how many packs you want, we confirm the price and courier charges, and your
+                ghee is on its way. Fresh milk and dahi stay in Okara, since they cannot travel.
+              </p>
+              <h3>Doodh and dahi, daily or in bulk in Okara</h3>
               <p>
                 We supply khalis doodh and dahi every day to homes, shops and hotels in Okara city, and some of the
                 city&apos;s well-known hotels already buy from us. For weddings, mehndi, walima and other functions we
@@ -525,7 +541,8 @@ export default function Home() {
               </p>
               <p>
                 Ordering is simple: <a href="#shop">add desi ghee to your cart</a> or message us on WhatsApp at{" "}
-                {BUSINESS.whatsappDisplay}. We confirm every order personally, and you pay cash on delivery.
+                {BUSINESS.whatsappDisplay}. In Okara you pay cash on delivery; for courier orders we confirm the
+                total and charges, and you pay by bank transfer or a mobile wallet before we ship.
               </p>
             </article>
 
