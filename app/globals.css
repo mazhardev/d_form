@@ -483,3 +483,11 @@ h1, h2, h3 { margin: 0; line-height: 1.1; letter-spacing: -0.02em; font-weight: 
   .guide-grid { grid-template-columns: 1fr; gap: 40px; }
   .faq { position: static; }
 }
+
+/* ── Footer social links ─────────────── */
+.footer-social { list-style: none; display: flex; gap: 10px; margin: 16px 0 0; padding: 0; }
+.footer-social a {
+  width: 38px; height: 38px; border-radius: 10px; display: grid; place-items: center;
+  background: rgba(255, 255, 255, .08); color: #fff; text-decoration: none; transition: background .2s ease, color .2s ease;
+}
+.footer-social a:hover { background: var(--ghee); color: var(--dark); }

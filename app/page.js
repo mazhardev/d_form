@@ -1,8 +1,11 @@
-import { BUSINESS, PRODUCTS, HERD, DAIRY_ITEMS, asset, formatPKR, waLink, mapsLink, SITE_URL } from "@/lib/config";
+import { BUSINESS, PRODUCTS, HERD, DAIRY_ITEMS, SOCIAL, asset, formatPKR, waLink, mapsLink, SITE_URL } from "@/lib/config";
 import ProcessVideo from "./ProcessVideo";
 import { AddToCart, CartButton, WaIcon } from "./cart";
 
 const YEARS = new Date().getFullYear() - BUSINESS.since;
+
+// Social profile URLs that are actually set, for schema sameAs and the footer.
+const SAME_AS = [SOCIAL.facebook, SOCIAL.instagram, SOCIAL.tiktok, SOCIAL.youtube].filter(Boolean);
 
 const PRICE_LIST = PRODUCTS.map(
   (p) => `${p.name} ${p.size}: ${typeof p.price === "number" ? formatPKR(p.price) : "price on WhatsApp"}`
@@ -44,6 +47,14 @@ const jsonLd = {
   "@context": "https://schema.org",
   "@graph": [
     {
+      "@type": "WebSite",
+      "@id": `${SITE_URL}#website`,
+      url: SITE_URL,
+      name: BUSINESS.name,
+      inLanguage: "en-PK",
+      publisher: { "@id": `${SITE_URL}#business` },
+    },
+    {
       "@type": "LocalBusiness",
       "@id": `${SITE_URL}#business`,
       name: BUSINESS.name,
@@ -67,6 +78,15 @@ const jsonLd = {
       paymentAccepted: "Cash on delivery, Bank transfer, Easypaisa, JazzCash",
       currenciesAccepted: "PKR",
       knowsAbout: ["Desi ghee", "Makhan", "Milk", "Dahi"],
+      logo: `${SITE_URL}icon.svg`,
+      contactPoint: {
+        "@type": "ContactPoint",
+        telephone: "+" + BUSINESS.whatsappIntl,
+        contactType: "sales",
+        areaServed: "PK",
+        availableLanguage: ["Urdu", "English"],
+      },
+      ...(SAME_AS.length && { sameAs: SAME_AS }),
       makesOffer: DAIRY_ITEMS.map((d) => ({
         "@type": "Offer",
         description: "Daily supply in Okara city, and bulk orders for weddings, functions and hotels",
@@ -215,6 +235,45 @@ const PROMISES = [
   { icon: "filter", title: "Strained clean", text: "Every batch is filtered before it is weighed, sealed and packed." },
   { icon: "shield", title: "A name you know", text: `${YEARS} years in Okara. Every order is confirmed by us personally.` },
 ];
+
+// Only links with a URL set in SOCIAL render; WhatsApp is always available.
+const SOCIAL_LINKS = [
+  { key: "whatsapp", label: "WhatsApp", href: SOCIAL.whatsapp, icon: <WaIcon size={18} /> },
+  {
+    key: "facebook", label: "Facebook", href: SOCIAL.facebook,
+    icon: (
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+        <path d="M13.5 21v-7h2.3l.4-2.9h-2.7V9.3c0-.8.3-1.4 1.5-1.4H16V5.3c-.3 0-1.2-.1-2.2-.1-2.2 0-3.7 1.3-3.7 3.8v2.1H7.7V14h2.4v7z" />
+      </svg>
+    ),
+  },
+  {
+    key: "instagram", label: "Instagram", href: SOCIAL.instagram,
+    icon: (
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden="true">
+        <rect x="4" y="4" width="16" height="16" rx="5" />
+        <circle cx="12" cy="12" r="3.5" />
+        <circle cx="17" cy="7" r="1" fill="currentColor" stroke="none" />
+      </svg>
+    ),
+  },
+  {
+    key: "tiktok", label: "TikTok", href: SOCIAL.tiktok,
+    icon: (
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+        <path d="M16.5 3h-2.6v12.4a2.3 2.3 0 1 1-2.3-2.3c.2 0 .4 0 .6.1v-2.7a5 5 0 1 0 4.3 5V8.8a6.3 6.3 0 0 0 3.5 1.1V7.2a3.6 3.6 0 0 1-3.5-3.2z" />
+      </svg>
+    ),
+  },
+  {
+    key: "youtube", label: "YouTube", href: SOCIAL.youtube,
+    icon: (
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+        <path d="M23 8.3a2.6 2.6 0 0 0-1.8-1.8C19.6 6 12 6 12 6s-7.6 0-9.2.5A2.6 2.6 0 0 0 1 8.3 27 27 0 0 0 .6 12 27 27 0 0 0 1 15.7a2.6 2.6 0 0 0 1.8 1.8c1.6.5 9.2.5 9.2.5s7.6 0 9.2-.5a2.6 2.6 0 0 0 1.8-1.8A27 27 0 0 0 23.4 12 27 27 0 0 0 23 8.3zM9.8 15.3V8.7l5.7 3.3z" />
+      </svg>
+    ),
+  },
+].filter((s) => s.href);
 
 export default function Home() {
   const contactMsg = `Assalam o Alaikum ${BUSINESS.name}, I'd like to know more about your desi ghee.`;
@@ -604,6 +663,17 @@ export default function Home() {
             <span className="brand-name">{BUSINESS.name}</span>
             <span className="footer-urdu" lang="ur" dir="rtl">محمد ڈیری، اوکاڑہ</span>
             <p>Pure desi ghee, makhan, khalis doodh and dahi, made in Okara since {BUSINESS.since}.</p>
+            {SOCIAL_LINKS.length > 0 && (
+              <ul className="footer-social">
+                {SOCIAL_LINKS.map((s) => (
+                  <li key={s.key}>
+                    <a href={s.href} target="_blank" rel="noopener" aria-label={`${BUSINESS.name} on ${s.label}`}>
+                      {s.icon}
+                    </a>
+                  </li>
+                ))}
+              </ul>
+            )}
           </div>
           <div>
             <h3>Visit</h3>
