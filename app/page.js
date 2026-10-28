@@ -1,5 +1,6 @@
 import { BUSINESS, PRODUCTS, HERD, DAIRY_ITEMS, SOCIAL, asset, formatPKR, waLink, mapsLink, SITE_URL } from "@/lib/config";
 import ProcessVideo from "./ProcessVideo";
+import ThemeToggle from "./ThemeToggle";
 import { AddToCart, CartButton, WaIcon } from "./cart";
 
 const YEARS = new Date().getFullYear() - BUSINESS.since;
@@ -326,6 +327,7 @@ export default function Home() {
             <a className="btn btn-wa btn-sm header-wa" href={waLink(contactMsg)} target="_blank" rel="noopener">
               <WaIcon size={16} /> {BUSINESS.whatsappDisplay}
             </a>
+            <ThemeToggle />
             <CartButton />
           </div>
         </div>

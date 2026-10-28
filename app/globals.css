@@ -17,6 +17,39 @@
   --urdu: "Noto Nastaliq Urdu", serif;
   --radius: 16px;
   --shadow: 0 1px 2px rgba(43, 33, 24, .06), 0 12px 32px -12px rgba(43, 33, 24, .18);
+  --header-bg: rgba(251, 248, 242, .94);
+  --btn-primary-bg: var(--ink);
+  --btn-primary-fg: #fff;
+  --btn-primary-hover: #46372a;
+  --cart-bg: var(--ink);
+  --cart-fg: #fff;
+  --cart-hover: #46372a;
+}
+
+/* ── Dark theme ──────────────────────── */
+/* Applied automatically when the device prefers dark (unless the viewer
+   chose light), and always when the viewer picks dark via the toggle. */
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #15110b; --surface: #1e1811; --sand: #241d14;
+    --ink: #f3ece0; --ink-2: #cabca8; --muted: #9d8f7c; --line: #352b20;
+    --ghee: #e9ad33; --ghee-deep: #eab94f; --ghee-soft: #2a2114;
+    --dark: #211a12; --dark-2: #2d2419;
+    --shadow: 0 1px 2px rgba(0, 0, 0, .4), 0 12px 32px -12px rgba(0, 0, 0, .6);
+    --header-bg: rgba(21, 17, 11, .9);
+    --btn-primary-bg: var(--ghee); --btn-primary-fg: var(--dark); --btn-primary-hover: var(--ghee-deep);
+    --cart-bg: var(--dark-2); --cart-fg: var(--ink); --cart-hover: #3a3020;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #15110b; --surface: #1e1811; --sand: #241d14;
+  --ink: #f3ece0; --ink-2: #cabca8; --muted: #9d8f7c; --line: #352b20;
+  --ghee: #e9ad33; --ghee-deep: #eab94f; --ghee-soft: #2a2114;
+  --dark: #211a12; --dark-2: #2d2419;
+  --shadow: 0 1px 2px rgba(0, 0, 0, .4), 0 12px 32px -12px rgba(0, 0, 0, .6);
+  --header-bg: rgba(21, 17, 11, .9);
+  --btn-primary-bg: var(--ghee); --btn-primary-fg: var(--dark); --btn-primary-hover: var(--ghee-deep);
+  --cart-bg: var(--dark-2); --cart-fg: var(--ink); --cart-hover: #3a3020;
 }
 
 * { box-sizing: border-box; }
@@ -44,8 +77,8 @@ h1, h2, h3 { margin: 0; line-height: 1.1; letter-spacing: -0.02em; font-weight: 
 .film-toggle:focus-visible, .chapter:focus-visible, .hero-film:focus-visible {
   outline: 3px solid var(--ghee); outline-offset: 3px;
 }
-.btn-primary { background: var(--ink); color: #fff; }
-.btn-primary:hover { background: #46372a; }
+.btn-primary { background: var(--btn-primary-bg); color: var(--btn-primary-fg); }
+.btn-primary:hover { background: var(--btn-primary-hover); }
 .btn-light { background: var(--surface); color: var(--ink); box-shadow: inset 0 0 0 1.5px var(--line); }
 .btn-light:hover { box-shadow: inset 0 0 0 1.5px var(--ink); }
 .btn-ghost { background: transparent; color: var(--ink); box-shadow: inset 0 0 0 1.5px var(--line); }
@@ -64,7 +97,7 @@ h1, h2, h3 { margin: 0; line-height: 1.1; letter-spacing: -0.02em; font-weight: 
 
 .header {
   position: sticky; top: 0; z-index: 30;
-  background: rgba(251, 248, 242, .94);
+  background: var(--header-bg);
   backdrop-filter: saturate(1.4) blur(10px); -webkit-backdrop-filter: saturate(1.4) blur(10px);
   border-bottom: 1px solid var(--line);
 }
@@ -85,9 +118,18 @@ h1, h2, h3 { margin: 0; line-height: 1.1; letter-spacing: -0.02em; font-weight: 
 
 .cart-btn {
   position: relative; display: inline-flex; align-items: center; gap: 8px; height: 40px; padding: 0 14px;
-  border: 0; border-radius: 10px; cursor: pointer; background: var(--ink); color: #fff; font: 700 14px/1 var(--sans);
+  border: 0; border-radius: 10px; cursor: pointer; background: var(--cart-bg); color: var(--cart-fg); font: 700 14px/1 var(--sans);
 }
-.cart-btn:hover { background: #46372a; }
+.cart-btn:hover { background: var(--cart-hover); }
+
+/* ── Theme toggle ────────────────────── */
+.theme-toggle {
+  width: 40px; height: 40px; border-radius: 10px; border: 0; cursor: pointer; flex: none;
+  background: transparent; color: var(--ink-2); display: grid; place-items: center;
+  transition: background .2s ease, color .2s ease;
+}
+.theme-toggle:hover { background: var(--sand); color: var(--ink); }
+.theme-toggle:focus-visible { outline: 3px solid var(--ghee); outline-offset: 3px; }
 .cart-count {
   min-width: 22px; height: 22px; padding: 0 6px; border-radius: 999px;
   background: var(--ghee); color: var(--dark); font: 800 12px/22px var(--sans); text-align: center;

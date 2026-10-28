@@ -29,12 +29,21 @@ export const metadata = {
   twitter: { card: "summary_large_image" },
 };
 
-export const viewport = { themeColor: "#fbf8f2" };
+export const viewport = {
+  themeColor: [
+    { media: "(prefers-color-scheme: light)", color: "#fbf8f2" },
+    { media: "(prefers-color-scheme: dark)", color: "#15110b" },
+  ],
+};
+
+// Applies the saved theme before the page paints, so there is no light flash.
+const themeScript = `(function(){try{var t=localStorage.getItem('md-theme');if(t==='light'||t==='dark')document.documentElement.setAttribute('data-theme',t);}catch(e){}})();`;
 
 export default function RootLayout({ children }) {
   return (
-    <html lang="en">
+    <html lang="en" suppressHydrationWarning>
       <head>
+        <script dangerouslySetInnerHTML={{ __html: themeScript }} />
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="" />
         <link
