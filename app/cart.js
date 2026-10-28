@@ -2,13 +2,18 @@
 
 import { createContext, useContext, useEffect, useMemo, useState } from "react";
 import { BUSINESS, PRODUCTS, formatPKR, waLink, asset } from "@/lib/config";
+import { STR } from "@/lib/i18n";
 
 const CartCtx = createContext(null);
 export const useCart = () => useContext(CartCtx);
 
 const STORAGE_KEY = "md-cart-v1";
 
-export function CartProvider({ children }) {
+export function CartProvider({ children, locale = "en" }) {
+  const strings = STR[locale] || STR.en;
+  const t = strings.cart;
+  const products = strings.products; // localized display name/size per product id
+
   const [items, setItems] = useState(null); // { productId: qty }, null until loaded from storage
   const [open, setOpen] = useState(false);
   const [step, setStep] = useState("cart"); // cart | details
@@ -53,7 +58,7 @@ export function CartProvider({ children }) {
   const allPriced = lines.every((l) => typeof l.product.price === "number");
   const total = lines.reduce((a, l) => a + (l.product.price || 0) * l.qty, 0);
 
-  const value = { items, lines, count, total, allPriced, add, setQty, clear, open, setOpen, step, setStep };
+  const value = { items, lines, count, total, allPriced, add, setQty, clear, open, setOpen, step, setStep, t, products };
   return (
     <CartCtx.Provider value={value}>
       {children}
@@ -63,21 +68,21 @@ export function CartProvider({ children }) {
 }
 
 export function CartButton() {
-  const { count, setOpen } = useCart();
+  const { count, setOpen, t } = useCart();
   return (
-    <button className="cart-btn" onClick={() => setOpen(true)} aria-label={`Open cart, ${count} items`}>
+    <button className="cart-btn" onClick={() => setOpen(true)} aria-label={`${t.open}, ${count}`}>
       <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
         <path d="M6 7h12l-1 13H7L6 7z" />
         <path d="M9 7a3 3 0 0 1 6 0" />
       </svg>
-      <span className="cart-btn-label">Cart</span>
+      <span className="cart-btn-label">{t.cart}</span>
       {count > 0 && <span className="cart-count">{count}</span>}
     </button>
   );
 }
 
 function CartDrawer() {
-  const { lines, total, allPriced, setQty, clear, open, setOpen, step, setStep, count } = useCart();
+  const { lines, total, allPriced, setQty, clear, open, setOpen, step, setStep, count, t, products } = useCart();
   const [form, setForm] = useState({ name: "", phone: "", city: "", address: "", notes: "" });
   const [error, setError] = useState("");
 
@@ -88,14 +93,16 @@ function CartDrawer() {
   }, [setOpen]);
 
   const update = (k) => (e) => setForm((f) => ({ ...f, [k]: e.target.value }));
+  const name = (p) => `${products[p.id].name} ${products[p.id].size}`;
 
   const checkout = (e) => {
     e.preventDefault();
     if (!form.name.trim() || !form.phone.trim() || !form.address.trim()) {
-      setError("Please fill in your name, phone number and address.");
+      setError(t.error);
       return;
     }
     setError("");
+    // The order message stays in English so it is easy for the dairy to read.
     const itemLines = lines.map((l, i) => {
       const price = typeof l.product.price === "number" ? ` = ${formatPKR(l.product.price * l.qty)}` : "";
       return `${i + 1}. ${l.product.name} (${l.product.size}) x ${l.qty}${price}`;
@@ -126,16 +133,16 @@ function CartDrawer() {
   return (
     <>
       <div className={`scrim ${open ? "show" : ""}`} onClick={() => setOpen(false)} aria-hidden="true" />
-      <aside className={`drawer ${open ? "open" : ""}`} aria-hidden={!open} aria-label="Shopping cart">
+      <aside className={`drawer ${open ? "open" : ""}`} aria-hidden={!open} aria-label={t.cart}>
         <header className="drawer-head">
-          <h2>{step === "cart" ? "Your order" : "Delivery details"}</h2>
-          <button className="icon-btn" onClick={() => setOpen(false)} aria-label="Close cart">✕</button>
+          <h2>{step === "cart" ? t.title : t.details}</h2>
+          <button className="icon-btn" onClick={() => setOpen(false)} aria-label={t.close}>✕</button>
         </header>
 
         {lines.length === 0 ? (
           <div className="drawer-empty">
-            <p>Your cart is empty.</p>
-            <a className="btn btn-ghost" href="#shop" onClick={() => setOpen(false)}>Browse products</a>
+            <p>{t.empty}</p>
+            <a className="btn btn-ghost" href="#shop" onClick={() => setOpen(false)}>{t.browse}</a>
           </div>
         ) : step === "cart" ? (
           <>
@@ -144,12 +151,12 @@ function CartDrawer() {
                 <li key={p.id} className="line">
                   <img src={asset(p.image)} alt="" width="64" height="64" />
                   <div className="line-info">
-                    <strong>{p.name}</strong>
-                    <span>{p.size}{typeof p.price === "number" && ` · ${formatPKR(p.price)}`}</span>
+                    <strong>{products[p.id].name}</strong>
+                    <span>{products[p.id].size}{typeof p.price === "number" && ` · ${formatPKR(p.price)}`}</span>
                     <div className="qty">
-                      <button onClick={() => setQty(p.id, qty - 1)} aria-label={`Remove one ${p.name} ${p.size}`}>−</button>
+                      <button onClick={() => setQty(p.id, qty - 1)} aria-label={t.remove(name(p))}>−</button>
                       <span aria-live="polite">{qty}</span>
-                      <button onClick={() => setQty(p.id, qty + 1)} aria-label={`Add one ${p.name} ${p.size}`}>+</button>
+                      <button onClick={() => setQty(p.id, qty + 1)} aria-label={t.add(name(p))}>+</button>
                     </div>
                   </div>
                   {typeof p.price === "number" && <b className="line-total">{formatPKR(p.price * qty)}</b>}
@@ -158,29 +165,29 @@ function CartDrawer() {
             </ul>
             <footer className="drawer-foot">
               <div className="total-row">
-                <span>Total ({count} {count === 1 ? "item" : "items"})</span>
-                <b>{allPriced ? formatPKR(total) : "Confirmed on WhatsApp"}</b>
+                <span>{t.totalItems(count)}</span>
+                <b>{allPriced ? formatPKR(total) : t.confirmedOnWa}</b>
               </div>
-              <button className="btn btn-primary btn-block" onClick={() => setStep("details")}>Checkout</button>
-              <p className="fine">You'll confirm your order with us on WhatsApp. Cash on delivery.</p>
+              <button className="btn btn-primary btn-block" onClick={() => setStep("details")}>{t.checkout}</button>
+              <p className="fine">{t.fine}</p>
             </footer>
           </>
         ) : (
           <form className="checkout" onSubmit={checkout} noValidate>
-            <label>Full name *<input value={form.name} onChange={update("name")} autoComplete="name" required /></label>
-            <label>Phone number *<input value={form.phone} onChange={update("phone")} type="tel" inputMode="tel" autoComplete="tel" placeholder="03xx xxxxxxx" required /></label>
-            <label>City<input value={form.city} onChange={update("city")} autoComplete="address-level2" /></label>
-            <label>Delivery address *<textarea value={form.address} onChange={update("address")} rows={3} autoComplete="street-address" required /></label>
-            <label>Notes<textarea value={form.notes} onChange={update("notes")} rows={2} placeholder="Delivery time, special requests…" /></label>
+            <label>{t.name} *<input value={form.name} onChange={update("name")} autoComplete="name" required /></label>
+            <label>{t.phone} *<input value={form.phone} onChange={update("phone")} type="tel" inputMode="tel" autoComplete="tel" placeholder={t.phonePh} required /></label>
+            <label>{t.city}<input value={form.city} onChange={update("city")} autoComplete="address-level2" /></label>
+            <label>{t.address} *<textarea value={form.address} onChange={update("address")} rows={3} autoComplete="street-address" required /></label>
+            <label>{t.notes}<textarea value={form.notes} onChange={update("notes")} rows={2} placeholder={t.notesPh} /></label>
             {error && <p className="form-error" role="alert">{error}</p>}
             <div className="total-row">
-              <span>Order total</span>
-              <b>{allPriced ? formatPKR(total) : "Confirmed on WhatsApp"}</b>
+              <span>{t.orderTotal}</span>
+              <b>{allPriced ? formatPKR(total) : t.confirmedOnWa}</b>
             </div>
             <button type="submit" className="btn btn-wa btn-block">
-              <WaIcon /> Send order on WhatsApp
+              <WaIcon /> {t.send}
             </button>
-            <button type="button" className="btn btn-ghost btn-block" onClick={() => setStep("cart")}>Back to cart</button>
+            <button type="button" className="btn btn-ghost btn-block" onClick={() => setStep("cart")}>{t.back}</button>
           </form>
         )}
       </aside>
@@ -188,11 +195,11 @@ function CartDrawer() {
   );
 }
 
-export function AddToCart({ id, label = "Add to cart" }) {
-  const { add } = useCart();
+export function AddToCart({ id }) {
+  const { add, t } = useCart();
   return (
     <button className="btn btn-primary" onClick={() => add(id)}>
-      {label}
+      {t.addToCart}
     </button>
   );
 }

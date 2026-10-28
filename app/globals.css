@@ -533,3 +533,45 @@ h1, h2, h3 { margin: 0; line-height: 1.1; letter-spacing: -0.02em; font-weight: 
   background: rgba(255, 255, 255, .08); color: #fff; text-decoration: none; transition: background .2s ease, color .2s ease;
 }
 .footer-social a:hover { background: var(--ghee); color: var(--dark); }
+
+/* ── Language switcher ───────────────── */
+.lang { position: relative; flex: none; }
+.lang > summary {
+  list-style: none; cursor: pointer; display: inline-flex; align-items: center; gap: 6px; height: 40px; padding: 0 10px;
+  border-radius: 10px; color: var(--ink-2); font-size: 14px; font-weight: 700; user-select: none; white-space: nowrap;
+}
+.lang > summary::-webkit-details-marker { display: none; }
+.lang > summary::marker { content: ""; }
+.lang > summary:hover, .lang[open] > summary { background: var(--sand); color: var(--ink); }
+.lang > summary:focus-visible { outline: 3px solid var(--ghee); outline-offset: 3px; }
+.lang-menu {
+  position: absolute; top: calc(100% + 6px); inset-inline-end: 0; z-index: 45; min-width: 150px; margin: 0; padding: 6px; list-style: none;
+  background: var(--surface); border: 1px solid var(--line); border-radius: 12px; box-shadow: var(--shadow);
+}
+.lang-menu a { display: block; padding: 9px 12px; border-radius: 8px; text-decoration: none; color: var(--ink); font-size: 16px; font-weight: 600; }
+.lang-menu a:hover { background: var(--sand); }
+.lang-menu a.on { background: var(--ghee-soft); color: var(--ghee-deep); }
+.lang-menu [lang="ur"], .lang-menu [lang="pa"] { font-family: var(--urdu); }
+
+/* ── Urdu / Punjabi (right-to-left) ──── */
+.site[dir="rtl"] { font-family: var(--urdu); }
+.site[dir="rtl"] h1 { line-height: 1.7; }
+.site[dir="rtl"] h2, .site[dir="rtl"] h3 { line-height: 1.75; }
+.site[dir="rtl"] p, .site[dir="rtl"] li, .site[dir="rtl"] .lede, .site[dir="rtl"] .section-lede,
+.site[dir="rtl"] .nav a, .site[dir="rtl"] dd, .site[dir="rtl"] .faq-item summary { line-height: 2.05; }
+.site[dir="rtl"] .btn { line-height: 1.9; }
+.site[dir="rtl"] .kicker { letter-spacing: 0; }
+/* Keep Latin prices/numbers in the clean sans font */
+.site[dir="rtl"] .price, .site[dir="rtl"] .cart-count, .site[dir="rtl"] .hero-badge strong,
+.site[dir="rtl"] .line-total, .site[dir="rtl"] .total-row b, .site[dir="rtl"] .checkout input, .site[dir="rtl"] .checkout textarea { font-family: var(--sans); }
+/* Flip the few physical-direction details */
+.site[dir="rtl"] .hero-film { left: auto; right: -28px; }
+.site[dir="rtl"] .hero-badge { left: auto; right: -18px; }
+.site[dir="rtl"] .hero-film-play { margin-left: 0; margin-right: 6px; }
+.site[dir="rtl"] .product-size { left: auto; right: 12px; }
+.site[dir="rtl"] .photo-credit { right: auto; left: 8px; }
+.site[dir="rtl"] .chapter.on { box-shadow: inset -3px 0 0 var(--ghee); }
+@media (max-width: 560px) {
+  .site[dir="rtl"] .hero-film { right: 12px; }
+  .site[dir="rtl"] .hero-badge { right: 12px; }
+}
