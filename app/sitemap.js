@@ -1,5 +1,6 @@
 import { SITE_URL } from "@/lib/config";
 import { LOCALES } from "@/lib/i18n";
+import { CITIES } from "@/lib/cities";
 
 export const dynamic = "force-static";
 
@@ -11,6 +12,7 @@ const PAGES = [
   "how-to-check-pure-desi-ghee/",
   "desi-ghee-vs-banaspati/",
   "desi-ghee-price-in-pakistan/",
+  "desi-ghee/",
   "benefits-of-desi-ghee/",
   "what-is-danedar-ghee/",
   "fresh-makhan-okara/",
@@ -43,5 +45,12 @@ export default function sitemap() {
     priority: 0.7,
   }));
 
-  return [...homes, ...pages];
+  const cityPages = CITIES.map((c) => ({
+    url: `${SITE_URL}desi-ghee/${c.slug}/`,
+    lastModified: now,
+    changeFrequency: "monthly",
+    priority: 0.6,
+  }));
+
+  return [...homes, ...pages, ...cityPages];
 }

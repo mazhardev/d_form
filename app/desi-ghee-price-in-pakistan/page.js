@@ -54,7 +54,7 @@ export default function Page() {
         <h2>Delivery, courier and bulk</h2>
         <ul>
           <li><strong>In Okara:</strong> pay cash on delivery.</li>
-          <li><strong>Other cities:</strong> we courier Pakistan-wide; the courier charge is added and confirmed on WhatsApp first.</li>
+          <li><strong>Other cities:</strong> we <Link href="/desi-ghee/">courier Pakistan-wide</Link>; the courier charge is added and confirmed on WhatsApp first.</li>
           <li><strong>Bulk & events:</strong> message us for a quote on larger quantities.</li>
         </ul>
         <p>Prices can change with the market, so we always confirm the final total with you before any order is placed.</p>

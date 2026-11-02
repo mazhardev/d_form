@@ -76,6 +76,7 @@ export default function PageShell({ children }) {
             <h3>Order</h3>
             <p>
               <Link href="/">Buy desi ghee online</Link><br />
+              <Link href="/desi-ghee/">Delivery across Pakistan</Link><br />
               <Link href="/doodh-dahi-okara/">Doodh &amp; dahi in Okara</Link><br />
               <Link href="/daily-milk-delivery-okara/">Daily milk delivery</Link><br />
               <a href={waLink(CONTACT_MSG)} target="_blank" rel="noopener">WhatsApp {BUSINESS.whatsappDisplay}</a>
