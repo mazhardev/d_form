@@ -575,3 +575,36 @@ h1, h2, h3 { margin: 0; line-height: 1.1; letter-spacing: -0.02em; font-weight: 
   .site[dir="rtl"] .hero-film { right: 12px; }
   .site[dir="rtl"] .hero-badge { right: 12px; }
 }
+
+/* ── Content / article pages ─────────── */
+.crumbs { width: min(760px, 100% - 48px); margin: 22px auto 0; font-size: 14px; color: var(--muted); }
+.crumbs ol { list-style: none; display: flex; flex-wrap: wrap; align-items: center; gap: 8px; margin: 0; padding: 0; }
+.crumbs li { display: flex; align-items: center; gap: 8px; }
+.crumbs li:not(:last-child)::after { content: "›"; color: var(--line); }
+.crumbs a { color: var(--muted); text-decoration: none; }
+.crumbs a:hover { color: var(--ghee-deep); text-decoration: underline; }
+.crumbs [aria-current="page"] { color: var(--ink-2); }
+
+.article { width: min(760px, 100% - 48px); margin: 14px auto 0; padding-bottom: 8px; }
+.article h1 { font-size: clamp(30px, 5vw, 44px); }
+.article h2 { font-size: 25px; margin: 44px 0 0; }
+.article h3 { font-size: 19px; margin: 30px 0 0; }
+.article p { margin: 14px 0 0; font-size: 17px; color: var(--ink-2); max-width: 68ch; }
+.article .lede { font-size: 19.5px; color: var(--ink); margin-top: 18px; }
+.article ul, .article ol { margin: 14px 0 0; padding-left: 22px; max-width: 68ch; }
+.article li { margin-top: 7px; font-size: 17px; color: var(--ink-2); }
+.article a { color: var(--ghee-deep); font-weight: 600; text-decoration-thickness: 1.5px; text-underline-offset: 3px; }
+.article strong { color: var(--ink); }
+
+.ptable { width: min(760px, 100% - 48px); margin: 20px auto 0; border-collapse: collapse; font-size: 16.5px; }
+.ptable th, .ptable td { text-align: left; padding: 12px 14px; border-bottom: 1px solid var(--line); }
+.ptable th { color: var(--muted); font-size: 13.5px; letter-spacing: .04em; text-transform: uppercase; }
+.ptable td:last-child, .ptable th:last-child { text-align: right; font-weight: 700; color: var(--ink); }
+
+.page-cta { width: min(760px, 100% - 48px); margin: 32px auto 0; display: flex; flex-wrap: wrap; gap: 12px; }
+
+.related { width: min(760px, 100% - 48px); margin: 48px auto 72px; padding: 22px 24px; background: var(--sand); border: 1px solid var(--line); border-radius: var(--radius); }
+.related h2 { font-size: 14px; letter-spacing: .07em; text-transform: uppercase; color: var(--ghee-deep); }
+.related ul { list-style: none; margin: 12px 0 0; padding: 0; display: grid; gap: 10px; }
+.related a { color: var(--ink); font-weight: 600; text-decoration-color: var(--ghee); text-decoration-thickness: 1.5px; text-underline-offset: 3px; }
+.related a:hover { color: var(--ghee-deep); }

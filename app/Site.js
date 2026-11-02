@@ -8,6 +8,24 @@ import { CartProvider, AddToCart, CartButton, WaIcon } from "./cart";
 const YEARS = new Date().getFullYear() - BUSINESS.since;
 const SAME_AS = [SOCIAL.facebook, SOCIAL.instagram, SOCIAL.tiktok, SOCIAL.youtube].filter(Boolean);
 
+// Renders [[#anchor|visible text]] markers in a string as in-content links to page
+// sections. Plain strings (no marker) are returned unchanged. See lib/i18n.js.
+function linkify(text) {
+  if (typeof text !== "string" || !text.includes("[[")) return text;
+  const out = [];
+  const re = /\[\[([^\]|]+)\|([^\]]+)\]\]/g;
+  let last = 0;
+  let key = 0;
+  let m;
+  while ((m = re.exec(text)) !== null) {
+    if (m.index > last) out.push(text.slice(last, m.index));
+    out.push(<a key={key++} href={m[1]}>{m[2]}</a>);
+    last = m.index + m[0].length;
+  }
+  if (last < text.length) out.push(text.slice(last));
+  return out;
+}
+
 const ICONS = {
   check: <path d="M20 6 9 17l-5-5" />,
   play: <path d="M8 5.5v13l10.5-6.5z" fill="currentColor" stroke="none" />,
@@ -406,12 +424,12 @@ export default function Site({ locale = "en" }) {
                 <p className="kicker">{t.guide.kicker}</p>
                 <h2>{t.guide.h2}</h2>
                 {t.guide.accent && <p className="guide-urdu" lang="ur" dir="rtl">{t.guide.accent}</p>}
-                <p>{t.guide.p1}</p>
-                <h3>{t.guide.h3a}</h3><p>{t.guide.pa}</p>
-                <h3>{t.guide.h3b}</h3><p>{t.guide.pb}</p>
-                <h3>{t.guide.h3c}</h3><p>{t.guide.pc}</p>
-                <h3>{t.guide.h3d}</h3><p>{t.guide.pd}</p>
-                <p>{t.guide.pOrder}</p>
+                <p>{linkify(t.guide.p1)}</p>
+                <h3>{t.guide.h3a}</h3><p>{linkify(t.guide.pa)}</p>
+                <h3>{t.guide.h3b}</h3><p>{linkify(t.guide.pb)}</p>
+                <h3>{t.guide.h3c}</h3><p>{linkify(t.guide.pc)}</p>
+                <h3>{t.guide.h3d}</h3><p>{linkify(t.guide.pd)}</p>
+                <p>{linkify(t.guide.pOrder)}</p>
               </article>
               <div className="faq">
                 <h2 className="faq-title">{t.guide.faqTitle}</h2>
