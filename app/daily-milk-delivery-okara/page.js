@@ -44,8 +44,10 @@ export default function Page() {
 
         <h2>Also for events and hotels</h2>
         <p>
-          Besides daily home supply, we take bulk orders for weddings and functions, and supply
-          several of the city's hotels. See the full picture on our{" "}
+          Besides daily home supply, we take bulk orders for{" "}
+          <Link href="/doodh-dahi-for-weddings-okara/">weddings and functions</Link>, and are a{" "}
+          <Link href="/milk-supplier-for-hotels-okara/">milk supplier for hotels</Link> in the
+          city. See the full picture on our{" "}
           <Link href="/doodh-dahi-okara/">doodh and dahi in Okara</Link> page. For pure ghee that
           we courier beyond Okara, visit our <Link href="/">desi ghee shop</Link>.
         </p>
@@ -57,8 +59,8 @@ export default function Page() {
         <RelatedLinks
           links={[
             { href: "/doodh-dahi-okara/", label: "Khalis doodh & dahi in Okara" },
-            { href: "/our-dairy/", label: "Our dairy & herd" },
-            { href: "/", label: "Buy pure desi ghee online" },
+            { href: "/doodh-dahi-for-weddings-okara/", label: "Doodh & dahi for weddings" },
+            { href: "/milk-supplier-for-hotels-okara/", label: "Milk supplier for hotels in Okara" },
           ]}
         />
       </main>

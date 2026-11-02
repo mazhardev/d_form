@@ -66,7 +66,7 @@ export default function Page() {
         <RelatedLinks
           links={[
             { href: "/how-to-check-pure-desi-ghee/", label: "How to tell if desi ghee is pure" },
-            { href: "/how-desi-ghee-is-made/", label: "How our desi ghee is made" },
+            { href: "/benefits-of-desi-ghee/", label: "Benefits of desi ghee" },
             { href: "/", label: "Buy pure desi ghee online" },
           ]}
         />

@@ -54,8 +54,9 @@ export default function Page() {
 
         <h2>Why the slow method matters</h2>
         <p>
-          Cooking makhan slowly is what gives real ghee its deep golden colour, its nutty smell and
-          its grainy, danedar texture as it cools. Nothing else goes in — no vegetable oil, no
+          Cooking <Link href="/fresh-makhan-okara/">makhan</Link> slowly is what gives real ghee
+          its deep golden colour, its nutty smell and its{" "}
+          <Link href="/what-is-danedar-ghee/">grainy, danedar texture</Link> as it cools. Nothing else goes in — no vegetable oil, no
           banaspati, no colour and no flavouring. That is the whole difference between pure desi
           ghee and the <Link href="/desi-ghee-vs-banaspati/">banaspati sold as ghee</Link>.
         </p>
@@ -73,8 +74,8 @@ export default function Page() {
         <RelatedLinks
           links={[
             { href: "/how-to-check-pure-desi-ghee/", label: "How to tell if desi ghee is pure" },
+            { href: "/benefits-of-desi-ghee/", label: "Benefits of desi ghee" },
             { href: "/desi-ghee-vs-banaspati/", label: "Desi ghee vs banaspati" },
-            { href: "/", label: "Buy pure desi ghee online" },
           ]}
         />
       </main>

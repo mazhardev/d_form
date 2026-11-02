@@ -52,8 +52,8 @@ export default function Page() {
           region is famous for:
         </p>
         <ul>
-          <li><strong>Nili-Ravi buffalo</strong> — named after the Ravi river and known across Punjab for rich, creamy, high-butterfat milk, the best possible start for desi ghee.</li>
-          <li><strong>Sahiwal cow</strong> — Pakistan's best-known dairy cow: hardy, calm and prized for good, wholesome milk.</li>
+          <li><strong><Link href="/nili-ravi-buffalo/">Nili-Ravi buffalo</Link></strong> — named after the Ravi river and known across Punjab for rich, creamy, high-butterfat milk, the best possible start for desi ghee.</li>
+          <li><strong><Link href="/sahiwal-cow/">Sahiwal cow</Link></strong> — Pakistan's best-known dairy cow: hardy, calm and prized for good, wholesome milk.</li>
         </ul>
         <p>
           The animals are fed, watered and looked after every day, because pure ghee starts with
@@ -76,9 +76,9 @@ export default function Page() {
 
         <RelatedLinks
           links={[
+            { href: "/nili-ravi-buffalo/", label: "The Nili-Ravi buffalo" },
+            { href: "/sahiwal-cow/", label: "The Sahiwal cow" },
             { href: "/how-desi-ghee-is-made/", label: "How our desi ghee is made" },
-            { href: "/doodh-dahi-okara/", label: "Khalis doodh & dahi in Okara" },
-            { href: "/", label: "Buy pure desi ghee online" },
           ]}
         />
       </main>

@@ -11,9 +11,16 @@ const PAGES = [
   "how-to-check-pure-desi-ghee/",
   "desi-ghee-vs-banaspati/",
   "desi-ghee-price-in-pakistan/",
+  "benefits-of-desi-ghee/",
+  "what-is-danedar-ghee/",
+  "fresh-makhan-okara/",
   "doodh-dahi-okara/",
   "daily-milk-delivery-okara/",
+  "doodh-dahi-for-weddings-okara/",
+  "milk-supplier-for-hotels-okara/",
   "our-dairy/",
+  "nili-ravi-buffalo/",
+  "sahiwal-cow/",
 ];
 
 export default function sitemap() {

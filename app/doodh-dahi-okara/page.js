@@ -40,8 +40,8 @@ export default function Page() {
         <ul>
           <li><strong>Homes</strong> — a daily jug of fresh doodh and a pot of dahi for the family.</li>
           <li><strong>Shops & tea stalls</strong> — a steady daily quantity you can count on.</li>
-          <li><strong>Hotels & restaurants</strong> — several of Okara city's well-known hotels already take their doodh and dahi from us.</li>
-          <li><strong>Weddings & functions</strong> — mehndi, barat, walima and other events, in the quantity you need, ordered ahead.</li>
+          <li><strong><Link href="/milk-supplier-for-hotels-okara/">Hotels &amp; restaurants</Link></strong> — several of Okara city's well-known hotels already take their doodh and dahi from us.</li>
+          <li><strong><Link href="/doodh-dahi-for-weddings-okara/">Weddings &amp; functions</Link></strong> — mehndi, barat, walima and other events, in the quantity you need, ordered ahead.</li>
         </ul>
 
         <h2>Two ways to order</h2>
@@ -64,8 +64,8 @@ export default function Page() {
         <RelatedLinks
           links={[
             { href: "/daily-milk-delivery-okara/", label: "Daily milk delivery in Okara" },
-            { href: "/our-dairy/", label: "Our dairy & herd" },
-            { href: "/", label: "Buy pure desi ghee online" },
+            { href: "/doodh-dahi-for-weddings-okara/", label: "Doodh & dahi for weddings" },
+            { href: "/milk-supplier-for-hotels-okara/", label: "Milk supplier for hotels in Okara" },
           ]}
         />
       </main>

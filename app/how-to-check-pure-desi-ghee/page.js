@@ -40,7 +40,7 @@ export default function Page() {
 
         <h2>Five simple tests</h2>
         <ul>
-          <li><strong>The look.</strong> Melted pure ghee is clear and golden, not cloudy. As it cools it turns grainy (danedar), not smooth and waxy.</li>
+          <li><strong>The look.</strong> Melted pure ghee is clear and golden, not cloudy. As it cools it turns <Link href="/what-is-danedar-ghee/">grainy (danedar)</Link>, not smooth and waxy.</li>
           <li><strong>The smell.</strong> Real ghee has a rich, nutty aroma. A flat or plain oily smell suggests vegetable oil or banaspati has been mixed in.</li>
           <li><strong>The fridge test.</strong> Put a spoon of ghee in the fridge. Pure ghee sets firm and even; adulterated ghee often separates into layers because oil sets differently.</li>
           <li><strong>The palm test.</strong> A little pure ghee melts on your warm palm. Ghee that stays stubbornly solid at body temperature has likely been blended with cheaper fats.</li>
@@ -66,9 +66,9 @@ export default function Page() {
 
         <RelatedLinks
           links={[
+            { href: "/what-is-danedar-ghee/", label: "What is danedar ghee?" },
             { href: "/desi-ghee-vs-banaspati/", label: "Desi ghee vs banaspati" },
             { href: "/how-desi-ghee-is-made/", label: "How our desi ghee is made" },
-            { href: "/", label: "Buy pure desi ghee online" },
           ]}
         />
       </main>
